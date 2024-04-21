@@ -1,36 +1,46 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
+import id.ac.ui.cs.advprog.gametime.transaction.model.Buyer;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
-import id.ac.ui.cs.advprog.gametime.transaction.model.builder.TransactionBuilder;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.TransactionRepository;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @Override
-    public Transaction create(String buyerId, String sellerId, Map<String, Integer> products,
-                              float price) {
-        return this.transactionRepository.create(buyerId, sellerId, products,
-                                                 price, "WAITING_PAYMENT");
+    public Transaction create(String buyerId, String sellerId, List<String> productsId) {
+        return this.transactionRepository.create(buyerId, sellerId, productsId,
+                                                 this.getPrice(productsId),
+                                    "WAITING_PAYMENT");
     }
 
     @Override
     public Transaction pay(String id) {
-        // TODO
-        // if saldo cukup
-        // kurangi saldo
-//        return this.transactionRepository.updateStatus(id, "SUCCESS");
+        Transaction transaction = this.transactionRepository.getById(id);
+        Buyer buyer = this.userRepository.getById(transaction.getBuyerId());
+        float price = transaction.getPrice();
+        float buyerBalance = buyer.getBalance();
 
-        // else if saldo kurang
-//        return this.transactionRepository.updateStatus(id, "FAILED");
-        return null;
+        if (buyerBalance >= price) {
+            buyer.updateBalance(buyerBalance - price);
+            transaction.pay(true);
+        } else {
+            transaction.pay(false);
+        }
+
+        return transaction;
     }
 
     @Override
@@ -41,5 +51,14 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         return this.transactionRepository.getByBuyerId(userId);
+    }
+
+    private float getPrice(List<String> productsId) {
+        float price = 0;
+        for (String productId : productsId) {
+            price += this.productRepository.getById(productId).getPrice();
+        }
+
+        return price;
     }
 }

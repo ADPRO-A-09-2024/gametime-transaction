@@ -9,13 +9,15 @@ import java.util.UUID;
 
 @Repository
 public class ProductRepository {
+
     private List<Product> products = new ArrayList<>();
 
     public Product create(String sellerId, String name, String description,
-                          String category, float price) {
+                          String category, float rating, float price,
+                          List<String> reviewsId) {
         String id = UUID.randomUUID().toString();
         Product product = new Product(id, sellerId, name, description, category,
-                                      price, 0, new ArrayList<>());
+                                      price, rating, new ArrayList<>());
         this.products.add(product);
         return product;
     }

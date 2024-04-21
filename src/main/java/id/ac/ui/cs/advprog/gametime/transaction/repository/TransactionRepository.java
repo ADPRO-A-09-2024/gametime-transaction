@@ -1,7 +1,6 @@
 package id.ac.ui.cs.advprog.gametime.transaction.repository;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
-import id.ac.ui.cs.advprog.gametime.transaction.model.builder.TransactionBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -10,11 +9,11 @@ import java.util.*;
 public class TransactionRepository {
     List<Transaction> transactions = new ArrayList<>();
 
-    public Transaction create(String buyerId, String sellerId, Map<String, Integer> products,
+    public Transaction create(String buyerId, String sellerId, List<String> productsId,
                               float price, String paymentStatus) {
         String id = UUID.randomUUID().toString();
         Transaction transaction = new Transaction(id, buyerId, sellerId,
-                                                  products, new Date(), price,
+                                                  productsId, new Date(), price,
                                      "WAITING_PAYMENT");
         this.transactions.add(transaction);
         return transaction;
@@ -47,11 +46,5 @@ public class TransactionRepository {
             }
         }
         return transactionsBySeller;
-    }
-
-    public Transaction updateStatus(String id, String paymentStatus) {
-        Transaction transaction = this.getById(id);
-        transaction.updateStatus(paymentStatus);
-        return transaction;
     }
 }

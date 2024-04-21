@@ -5,6 +5,7 @@ import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,7 +15,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product create(String sellerId, String name, String description, String category, float price) {
-        return this.productRepository.create(sellerId, name, description, category, price);
+        return this.productRepository.create(sellerId, name, description, category, 0, price, new ArrayList<>());
     }
 
     @Override
