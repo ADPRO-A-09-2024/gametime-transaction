@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class Transaction {
@@ -20,15 +21,15 @@ public class Transaction {
     private PaymentStatus paymentStatus;
 
     public Transaction(String id, String buyerId, String sellerId,
-                       List<String> products, Date date,
+                       List<String> productsId, Date date,
                        float price, String paymentStatus) {
-        this.id = id;
-        this.buyerId = buyerId;
-        this.sellerId = sellerId;
-        this.productsId = products;
-        this.date = date;
-        this.price = price;
-        this.paymentStatus = getPaymentStatus(paymentStatus);
+        this.id = checkValidId(id);
+        this.buyerId = checkValidId(buyerId);
+        this.sellerId = checkValidId(sellerId);
+        this.productsId = checkValidIds(productsId);
+        this.date = checkDate(date);
+        this.price = checkPrice(price);
+        this.paymentStatus = convertPaymentStatus(paymentStatus);
     }
 
     public void changeStatus(PaymentStatus paymentStatus) {
@@ -39,11 +40,49 @@ public class Transaction {
         this.paymentStatus.onPay(enoughBalance);
     }
 
-    private PaymentStatus getPaymentStatus(String paymentStatus) {
+    public String getPaymentStatus() {
+        return this.paymentStatus.getValue();
+    }
+
+    private PaymentStatus convertPaymentStatus(String paymentStatus) {
         return switch (paymentStatus) {
             case "WAITING" -> new WaitingPayment(this);
             case "FAILED" -> new FailedPayment(this);
             case "SUCCESS" -> new SuccessPayment(this);
             default -> throw new IllegalArgumentException();
         };
-    }}
+    }
+
+    private String checkValidId(String id) {
+        UUID x = UUID.fromString(id);
+        return id;
+    }
+
+    private List<String> checkValidIds(List<String> ids) {
+        if (ids.isEmpty()) {
+            throw new IllegalArgumentException("Products must not be empty");
+        }
+
+        for (String id : ids) {
+            UUID x = UUID.fromString(id);
+        }
+
+        return ids;
+    }
+
+    private Date checkDate(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("Date must not be null");
+        }
+
+        return date;
+    }
+
+    private float checkPrice(float price) {
+        if (price <= 0) {
+            throw new IllegalArgumentException("Price must be more than 0");
+        }
+
+        return price;
+    }
+}

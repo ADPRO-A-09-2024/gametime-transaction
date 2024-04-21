@@ -4,7 +4,7 @@ import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 
 public class FailedPayment extends PaymentStatus {
     public FailedPayment(Transaction transaction) {
-        super(transaction);
+        super(transaction, "FAILED");
     }
 
     @Override

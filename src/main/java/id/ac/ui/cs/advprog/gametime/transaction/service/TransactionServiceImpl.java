@@ -23,7 +23,7 @@ public class TransactionServiceImpl implements TransactionService {
     public Transaction create(String buyerId, String sellerId, List<String> productsId) {
         return this.transactionRepository.create(buyerId, sellerId, productsId,
                                                  this.getPrice(productsId),
-                                    "WAITING_PAYMENT");
+                                    "WAITING");
     }
 
     @Override

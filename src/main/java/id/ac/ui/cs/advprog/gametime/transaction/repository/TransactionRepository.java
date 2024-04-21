@@ -14,7 +14,7 @@ public class TransactionRepository {
         String id = UUID.randomUUID().toString();
         Transaction transaction = new Transaction(id, buyerId, sellerId,
                                                   productsId, new Date(), price,
-                                     "WAITING_PAYMENT");
+                                                  paymentStatus);
         this.transactions.add(transaction);
         return transaction;
     }
@@ -41,7 +41,7 @@ public class TransactionRepository {
     public List<Transaction> getBySellerId(String sellerId) {
         List<Transaction> transactionsBySeller = new ArrayList<>();
         for (Transaction transaction : this.transactions) {
-            if (transaction.getBuyerId().equals(sellerId)) {
+            if (transaction.getSellerId().equals(sellerId)) {
                 transactionsBySeller.add(transaction);
             }
         }
