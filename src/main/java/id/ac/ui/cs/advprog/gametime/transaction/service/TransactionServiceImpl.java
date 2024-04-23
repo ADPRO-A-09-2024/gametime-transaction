@@ -29,7 +29,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public Transaction pay(String id) {
         Transaction transaction = this.transactionRepository.getById(id);
-        Buyer buyer = this.userRepository.getById(transaction.getBuyerId());
+        Buyer buyer = (Buyer) this.userRepository.getById(transaction.getBuyerId());
         float price = transaction.getPrice();
         float buyerBalance = buyer.getBalance();
 
