@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.ProductReviewBuilder;
+
 @Entity
 @Getter
 @Setter
@@ -16,10 +20,12 @@ public class ProductReview {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private User author;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
@@ -28,4 +34,8 @@ public class ProductReview {
 
     @Column(nullable = false)
     private double rating = 0;
+
+    public static ProductReviewBuilder builder() {
+        return new ProductReviewBuilder();
+    }
 }
