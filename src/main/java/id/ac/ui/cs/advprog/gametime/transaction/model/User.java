@@ -3,47 +3,42 @@ package id.ac.ui.cs.advprog.gametime.transaction.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.UserBuilder;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    @Getter
     private Integer id;
 
     @Column(nullable = false)
-    @Setter
     private String username;
 
     @Column(unique = true, length = 255, nullable = false)
-    @Getter
-    @Setter
     private String email;
 
     @Column(nullable = false)
-    @Getter
-    @Setter
     @JsonIgnore
     private String password;
 
     @Column(nullable = false)
-    @Getter
-    @Setter
     private String role;
 
     @Column(nullable = false)
-    @Getter
-    @Setter
     private int balance;
 
     public static UserBuilder builder() {
@@ -84,6 +79,3 @@ public class User implements UserDetails {
         return true;
     }
 }
-
-
-
