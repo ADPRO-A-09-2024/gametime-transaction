@@ -1,7 +1,12 @@
+package id.ac.ui.cs.advprog.gametime.transaction.repository;
+
+import org.springframework.stereotype.Repository;
+
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {

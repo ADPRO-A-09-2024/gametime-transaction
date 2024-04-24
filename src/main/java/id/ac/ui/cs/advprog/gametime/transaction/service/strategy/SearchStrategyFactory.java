@@ -1,6 +1,9 @@
+package id.ac.ui.cs.advprog.gametime.transaction.service.strategy;
 
 import org.springframework.stereotype.Component;
 
+
+@Component
 public class SearchStrategyFactory {
     public SearchStrategy getStrategy(String type) {
         if (type == null) {
