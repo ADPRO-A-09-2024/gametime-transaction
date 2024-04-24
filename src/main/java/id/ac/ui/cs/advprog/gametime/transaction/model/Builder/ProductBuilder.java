@@ -1,15 +1,27 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
 
+import java.util.UUID;
+
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
 
 public class ProductBuilder {
+    private UUID id;
     private User seller;
     private String name;
     private String description;
     private String category;
     private int price;
     private double rating;
+
+    public ProductBuilder id(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+
+        this.id = id;
+        return this;
+    }
 
     public ProductBuilder seller(User seller) {
         if (seller == null) {
@@ -67,6 +79,7 @@ public class ProductBuilder {
 
     public Product build() {
         Product product = new Product();
+        product.setId(id);
         product.setSeller(seller);
         product.setName(name);
         product.setDescription(description);
