@@ -25,30 +25,31 @@ repositories {
 val junitJupiterVersion = "5.9.1"
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-    implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
-    implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.postgresql:postgresql")
-    runtimeOnly("com.h2database:h2")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.google.code.gson:gson")
+	compileOnly("org.projectlombok:lombok")
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
+	runtimeOnly("org.postgresql:postgresql")
+	runtimeOnly("com.h2database:h2")
+	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+	annotationProcessor("org.projectlombok:lombok")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+	testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
 
 tasks.register<Test>("unitTest") {
-    description = "Run unit tests."
-    group = "verification"
-    filter {
-        excludeTestsMatching("*FunctionalTest")
-    }
+	description = "Run unit tests."
+	group = "verification"
+	filter {
+		excludeTestsMatching("*FunctionalTest")
+	}
 }
 
 tasks.test {
@@ -64,5 +65,5 @@ tasks.jacocoTestReport {
 }
 
 tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
+	useJUnitPlatform()
 }
