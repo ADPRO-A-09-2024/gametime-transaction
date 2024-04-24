@@ -1,17 +1,26 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
 
-import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.UserRole;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
+import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.UserRole;
 
 import java.lang.IllegalArgumentException;
 
 public class UserBuilder {
+    private Integer id;
     private String username;
     private String email;
     private String password;
     private String role;
 
     private int balance;
+
+    public UserBuilder id(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Id cannot be null");
+        }
+        this.id = id;
+        return this;
+    }
 
     public UserBuilder username(String username) {
         if (username == null || username.isEmpty()) {
@@ -70,6 +79,7 @@ public class UserBuilder {
 
     public User build() {
         User user = new User();
+        user.setId(id);
         user.setUsername(username);
         user.setEmail(email);
         user.setRole(role);
