@@ -90,7 +90,7 @@ public class TransactionController {
     }
 
     @PostMapping("/pay/{transactionId}")
-    public ResponseEntity<Transaction> pay(@PathVariable("transactionId") String transactionId) {
+    public ResponseEntity<Transaction> payTransaction(@PathVariable("transactionId") String transactionId) {
         UUID id;
         try {
             id = UUID.fromString(transactionId);
@@ -99,6 +99,6 @@ public class TransactionController {
                     HttpStatus.BAD_REQUEST, "Transaction ID is not valid");
         }
 
-        return ResponseEntity.ok(transactionService.pay(id));
+        return ResponseEntity.ok(transactionService.payTransaction(id));
     }
 }

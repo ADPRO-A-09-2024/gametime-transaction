@@ -12,5 +12,5 @@ public interface TransactionService {
     List<Transaction> getTransactionsByBuyer(Integer buyerId);
     List<Transaction> getTransactionsBySeller(Integer sellerId);
     List<Transaction> getAllTransactions();
-    Transaction pay(UUID id);
+    Transaction payTransaction(UUID id);
 }

@@ -68,7 +68,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction pay(UUID id) {
+    public Transaction payTransaction(UUID id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
