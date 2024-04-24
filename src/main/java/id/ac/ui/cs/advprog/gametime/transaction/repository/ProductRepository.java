@@ -3,9 +3,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    
+@Repository
+public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findByNameContaining(String name);
-
-    
+    List<Product> findByCategoryContaining(String category);
+    List<Product> findByRating(double rating);
 }
