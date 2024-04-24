@@ -1,5 +1,6 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
+import com.google.gson.Gson;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
@@ -10,6 +11,7 @@ import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -23,16 +25,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public Transaction createTransaction(TransactionDTO transactionDTO) {
-        User buyer = userRepository.findById(transactionDTO.getBuyerId())
+        User buyer = userRepository.findById(Integer.parseInt(transactionDTO.getBuyerId()))
                 .orElseThrow(() -> new IllegalArgumentException("Buyer not found"));
-        User seller = userRepository.findById(transactionDTO.getSellerId())
+        User seller = userRepository.findById(Integer.parseInt(transactionDTO.getSellerId()))
                 .orElseThrow(() -> new IllegalArgumentException("Seller not found"));
+
+        List<Product> products = Arrays.asList(new Gson().fromJson(transactionDTO.getProducts(), Product[].class));
 
         Transaction transaction = Transaction.builder()
                 .buyer(buyer)
                 .seller(seller)
-                .products(transactionDTO.getProducts())
-                .price(getPrice(transactionDTO.getProducts()))
+                .products(products)
+                .price(getPrice(products))
                 .date(new Date())
                 .paymentStatus(PaymentStatus.WAITING.name())
                 .build();
