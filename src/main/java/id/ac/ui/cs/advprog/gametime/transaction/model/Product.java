@@ -31,7 +31,7 @@ public class Product {
     private String category;
 
     @Column(nullable = false)
-    private double price;
+    private int price;
 
     @Column(nullable = false)
     private double rating = 0;

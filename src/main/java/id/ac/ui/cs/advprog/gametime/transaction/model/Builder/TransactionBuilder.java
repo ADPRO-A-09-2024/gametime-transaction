@@ -13,7 +13,7 @@ public class TransactionBuilder {
     private User seller;
     private List<Product> products;
     private Date date;
-    private double price;
+    private int price;
     private String paymentStatus;
 
     public TransactionBuilder buyer(User buyer) {
@@ -51,7 +51,7 @@ public class TransactionBuilder {
         return this;
     }
 
-    public TransactionBuilder price(double price) {
+    public TransactionBuilder price(int price) {
         if (price <= 0) {
             throw new IllegalArgumentException("Price must be more than 0");
         }

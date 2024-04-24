@@ -35,7 +35,7 @@ public class Transaction {
     private Date date;
 
     @Column(nullable = false)
-    private double price;
+    private int price;
 
     @Column(nullable = false)
     private String paymentStatus;
