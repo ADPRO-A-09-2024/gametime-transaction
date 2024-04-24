@@ -1,7 +1,10 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model;
 
+import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.ProductBuilder;
+import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.TransactionBuilder;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.List;
@@ -9,31 +12,35 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "transactions")
+@Getter
+@Setter
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    @Getter
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id", referencedColumnName = "id")
     private User buyer;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> products;
 
     @Column(nullable = false)
-    @Getter
     private Date date;
 
     @Column(nullable = false)
-    @Getter
-    private float price;
+    private double price;
 
     @Column(nullable = false)
-    @Getter
     private String paymentStatus;
+
+    public static TransactionBuilder builder() {
+        return new TransactionBuilder();
+    }
 }
