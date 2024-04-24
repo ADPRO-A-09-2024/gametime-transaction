@@ -15,7 +15,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public List<Product> findByName(String name) {
-        return productRepository.findByName(name);
+     public List<Product> searchProductByName(String name) {
+        return productRepository.findByNameContaining(name);
     }
 }
