@@ -131,8 +131,8 @@ public class ProductReviewServiceImplTest {
         UUID productId = UUID.randomUUID();
         ProductReview productReview1 = new ProductReview();
         ProductReview productReview2 = new ProductReview();
-        productReview1.setProduct(new Product(productId));
-        productReview2.setProduct(new Product(UUID.randomUUID()));
+        productReview1.setProduct(Product.builder().id(productId).build());
+        productReview2.setProduct(Product.builder().id(UUID.randomUUID()).build());
         when(productReviewRepository.findAll()).thenReturn(List.of(productReview1, productReview2));
 
         // Act
