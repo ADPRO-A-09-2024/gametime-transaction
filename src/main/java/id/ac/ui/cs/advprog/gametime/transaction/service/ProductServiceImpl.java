@@ -27,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new IllegalArgumentException("Seller not found"));
 
         Product product = Product.builder()
+                .id(UUID.randomUUID())
                 .seller(seller)
                 .name(createProductDTO.getName())
                 .description(createProductDTO.getDescription())
