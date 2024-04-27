@@ -91,11 +91,6 @@ public class ProductController {
         return ResponseEntity.ok(productService.updateProduct(id, updateProductDTO));
     }
 
-    @GetMapping("/search")
-    public String searchProduct() {
-        return "Hello World";
-    }
-
     @GetMapping("/search/{type}/{term}")
     public ResponseEntity<List<Product>> searchProduct(@PathVariable String type, @PathVariable String term) {
         return ResponseEntity.ok(productService.search(type, term));
