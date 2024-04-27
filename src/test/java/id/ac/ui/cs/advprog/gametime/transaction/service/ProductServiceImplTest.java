@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class ProductServiceTest {
+public class ProductServiceImplTest {
 
     @Mock
     private SearchStrategyFactory searchStrategyFactory;
@@ -25,7 +25,7 @@ public class ProductServiceTest {
     private SearchStrategy searchStrategy;
 
     @InjectMocks
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     @BeforeEach
     public void setup() {
