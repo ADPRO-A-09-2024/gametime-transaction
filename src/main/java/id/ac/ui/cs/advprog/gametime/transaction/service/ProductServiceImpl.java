@@ -7,6 +7,8 @@ import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
+import id.ac.ui.cs.advprog.gametime.transaction.service.strategy.SearchStrategy;
+import id.ac.ui.cs.advprog.gametime.transaction.service.strategy.SearchStrategyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private SearchStrategyFactory SearchStrategyFactory;
 
     @Override
     public Product createProduct(CreateProductDTO createProductDTO) {
@@ -70,5 +75,14 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(price);
 
         return productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> search(String type, String term) {
+        SearchStrategy strategy = SearchStrategyFactory.getStrategy(type);
+        if (strategy != null) {
+            return strategy.search(term);
+        }
+        throw new IllegalArgumentException("Invalid search type: " + type);
     }
 }
