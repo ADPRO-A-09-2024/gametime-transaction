@@ -33,6 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<Product> products = Arrays.asList(new Gson().fromJson(transactionDTO.getProducts(), Product[].class));
 
         Transaction transaction = Transaction.builder()
+                .id(UUID.randomUUID())
                 .buyer(buyer)
                 .seller(seller)
                 .products(products)

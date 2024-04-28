@@ -7,14 +7,25 @@ import id.ac.ui.cs.advprog.gametime.transaction.model.User;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 public class TransactionBuilder {
+    private UUID id;
     private User buyer;
     private User seller;
     private List<Product> products;
     private Date date;
     private int price;
     private String paymentStatus;
+
+    public TransactionBuilder id(UUID id) {
+        if (id == null) {
+            throw new IllegalArgumentException("ID cannot be null");
+        }
+
+        this.id = id;
+        return this;
+    }
 
     public TransactionBuilder buyer(User buyer) {
         if (buyer == null) {
@@ -74,6 +85,7 @@ public class TransactionBuilder {
 
     public Transaction build() {
         Transaction transaction = new Transaction();
+        transaction.setId(id);
         transaction.setBuyer(buyer);
         transaction.setSeller(seller);
         transaction.setProducts(products);
