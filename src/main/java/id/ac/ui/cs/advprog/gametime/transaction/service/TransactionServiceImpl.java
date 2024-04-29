@@ -6,6 +6,7 @@ import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.TransactionRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class TransactionServiceImpl implements TransactionService {
     TransactionRepository transactionRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @Override
     public Transaction createTransaction(TransactionDTO transactionDTO) {
@@ -30,7 +33,10 @@ public class TransactionServiceImpl implements TransactionService {
         User seller = userRepository.findById(Integer.parseInt(transactionDTO.getSellerId()))
                 .orElseThrow(() -> new IllegalArgumentException("Seller not found"));
 
-        List<Product> products = Arrays.asList(new Gson().fromJson(transactionDTO.getProducts(), Product[].class));
+        List<Product> products = Arrays.stream(new Gson().fromJson(transactionDTO.getProducts(), String[].class))
+                .map(productId -> productRepository.findById(UUID.fromString(productId))
+                        .orElseThrow(() -> new IllegalArgumentException("Product not found")))
+                .toList();
 
         Transaction transaction = Transaction.builder()
                 .id(UUID.randomUUID())

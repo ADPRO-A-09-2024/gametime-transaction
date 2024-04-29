@@ -73,7 +73,8 @@ public class ProductServiceImplTest {
 
         assertThrows(IllegalArgumentException.class, () ->
                 productService.createProduct(createProductDTO));
-    }
+        verify(userRepository, times(1)).findById(1);
+        verify(productRepository, times(0)).save(any(Product.class));    }
 
     @Test
     void testGetProductById() {
@@ -81,6 +82,7 @@ public class ProductServiceImplTest {
         UUID id = UUID.randomUUID();
         when(productRepository.findById(id)).thenReturn(Optional.of(product));
         assertEquals(product, productService.getProductById(id));
+        verify(productRepository, times(1)).findById(id);
     }
 
     @Test
