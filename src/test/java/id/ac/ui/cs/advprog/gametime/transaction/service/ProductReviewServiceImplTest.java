@@ -1,22 +1,24 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyInt;
 
 import java.util.*;
 
+import org.mockito.Mock;
 import org.junit.jupiter.api.*;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import id.ac.ui.cs.advprog.gametime.transaction.dto.ProductReviewDTO;
+import id.ac.ui.cs.advprog.gametime.transaction.model.User;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.ProductReview;
-import id.ac.ui.cs.advprog.gametime.transaction.model.User;
+import id.ac.ui.cs.advprog.gametime.transaction.dto.ProductReviewDTO;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductReviewRepository;
-import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 
 public class ProductReviewServiceImplTest {
 
@@ -185,16 +187,20 @@ public class ProductReviewServiceImplTest {
         productReviewDTO.setContent("Updated review");
         productReviewDTO.setRating("3.5");
 
+        Product product = new Product();
+        product.setId(UUID.randomUUID());
+
         ProductReview updatedProductReview = new ProductReview();
         updatedProductReview.setId(productReviewId);
         updatedProductReview.setContent("Updated review");
         updatedProductReview.setRating(3.5);
+        updatedProductReview.setProduct(product);
         when(productReviewRepository.findById(productReviewId)).thenReturn(Optional.of(updatedProductReview));
 
         User author = new User();
         author.setId(1);
         when(userRepository.findById(1)).thenReturn(Optional.of(author));
-        when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(new Product()));
+        when(productRepository.findById(any(UUID.class))).thenReturn(Optional.of(product));
 
         when(productReviewRepository.save(any(ProductReview.class))).thenReturn(updatedProductReview);
 
@@ -312,13 +318,21 @@ public class ProductReviewServiceImplTest {
         UUID productReviewId = UUID.randomUUID();
         ProductReview productReview = new ProductReview();
         productReview.setId(productReviewId);
-        when(productReviewRepository.findById(productReviewId)).thenReturn(Optional.of(productReview));
+
+        Product product = new Product();
+        product.setId(UUID.randomUUID());
+
+        productReview.setProduct(product);
+
+        when(productReviewRepository.findById(productReviewId)).thenReturn(java.util.Optional.of(productReview));
+        when(productRepository.findById(product.getId())).thenReturn(java.util.Optional.of(product));
 
         // Act
         productReviewService.deleteProductReview(productReviewId);
 
         // Assert
         verify(productReviewRepository, times(1)).delete(productReview);
+        verify(productRepository, times(1)).save(product);
     }
 
     @Test
@@ -342,5 +356,47 @@ public class ProductReviewServiceImplTest {
 
         // Assert
         verify(productReviewRepository, times(1)).deleteAll();
+    }
+
+    @Test
+    public void testUpdateProductRating() {
+        // Arrange
+        Product testProduct = new Product();
+        testProduct.setId(UUID.randomUUID());
+        testProduct.setName("Test Product");
+
+        ArrayList<ProductReview> testProductReviews = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            ProductReview review = new ProductReview();
+            review.setId(UUID.randomUUID());
+            review.setProduct(testProduct);
+            review.setRating(4.0);
+            testProductReviews.add(review);
+        }
+        when(productRepository.findById(testProduct.getId())).thenReturn(java.util.Optional.of(testProduct));
+        when(productReviewRepository.findAll()).thenReturn(testProductReviews);
+
+        // Act
+        productReviewService.updateProductRating(testProduct.getId());
+
+        // Calculate expected average rating
+        double totalRating = testProductReviews.stream().mapToDouble(ProductReview::getRating).sum();
+        double expectedAverageRating = totalRating / testProductReviews.size();
+
+        // Assert
+        assertEquals(expectedAverageRating, testProduct.getRating(), 0.001);
+        verify(productRepository, times(1)).save(testProduct);
+    }
+
+    @Test()
+    public void testUpdateProductRatingProductNotFound() {
+        // Arrange
+        when(productRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            productReviewService.updateProductRating(UUID.randomUUID());
+        });
+        assertEquals("Product not found", exception.getMessage());
     }
 }
