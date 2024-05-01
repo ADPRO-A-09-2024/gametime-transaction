@@ -2,6 +2,8 @@ package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import java.util.List;
 import java.util.UUID;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,9 @@ public class ProductReviewServiceImpl implements ProductReviewService {
                 .content(productReviewDTO.getContent())
                 .rating(Double.parseDouble(productReviewDTO.getRating()))
                 .build();
-        return productReviewRepository.save(productReview);
+        productReview = productReviewRepository.save(productReview);
+        updateProductRating(product.getId());
+        return productReview;
     }
 
     @Override
@@ -82,8 +86,9 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         productReview.setProduct(product);
         productReview.setContent(productReviewDTO.getContent());
         productReview.setRating(rating);
-
-        return productReviewRepository.save(productReview);
+        productReview = productReviewRepository.save(productReview);
+        updateProductRating(product.getId());
+        return productReview;
     }
 
     @Override
@@ -91,10 +96,33 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         ProductReview productReview = productReviewRepository.findById(productReviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
         productReviewRepository.delete(productReview);
+        updateProductRating(productReview.getProduct().getId());
     }
 
     @Override
     public void deleteAllProductReviews() {
         productReviewRepository.deleteAll();
+    }
+
+    public void updateProductRating(UUID productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new IllegalArgumentException("Product not found"));
+
+        List<ProductReview> productReviews = getProductReviewsByProduct(productId);
+
+        double totalRating = productReviews.stream()
+                .mapToDouble(ProductReview::getRating)
+                .sum();
+
+        if (productReviews.size() > 0) {
+            double averageRating = totalRating / productReviews.size();
+            BigDecimal bd = BigDecimal.valueOf(averageRating);
+            bd = bd.setScale(2, RoundingMode.HALF_UP);
+            product.setRating(bd.doubleValue());
+        } else {
+            product.setRating(0.0);
+        }
+
+        productRepository.save(product);
     }
 }
