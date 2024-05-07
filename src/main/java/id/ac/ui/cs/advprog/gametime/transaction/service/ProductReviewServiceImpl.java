@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.UUID;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.dto.ProductReviewDTO;
@@ -41,7 +43,10 @@ public class ProductReviewServiceImpl implements ProductReviewService {
                 .rating(Double.parseDouble(productReviewDTO.getRating()))
                 .build();
         productReview = productReviewRepository.save(productReview);
-        updateProductRating(product.getId());
+
+        // Update product's rating asynchronously
+        CompletableFuture.runAsync(() -> updateProductRating(product.getId()));
+
         return productReview;
     }
 
@@ -87,7 +92,10 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         productReview.setContent(productReviewDTO.getContent());
         productReview.setRating(rating);
         productReview = productReviewRepository.save(productReview);
-        updateProductRating(product.getId());
+
+        // Update product's rating asynchronously
+        CompletableFuture.runAsync(() -> updateProductRating(product.getId()));
+
         return productReview;
     }
 
@@ -96,7 +104,9 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         ProductReview productReview = productReviewRepository.findById(productReviewId)
                 .orElseThrow(() -> new IllegalArgumentException("Review not found"));
         productReviewRepository.delete(productReview);
-        updateProductRating(productReview.getProduct().getId());
+
+        // Update product's rating asynchronously
+        CompletableFuture.runAsync(() -> updateProductRating(productReview.getProduct().getId()));
     }
 
     @Override
@@ -104,6 +114,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         productReviewRepository.deleteAll();
     }
 
+    @Async
     public void updateProductRating(UUID productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Product not found"));
@@ -114,7 +125,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
                 .mapToDouble(ProductReview::getRating)
                 .sum();
 
-        if (productReviews.size() > 0) {
+        if (!productReviews.isEmpty()) {
             double averageRating = totalRating / productReviews.size();
             BigDecimal bd = BigDecimal.valueOf(averageRating);
             bd = bd.setScale(2, RoundingMode.HALF_UP);
