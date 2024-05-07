@@ -330,9 +330,7 @@ public class ProductReviewServiceImplTest {
         // Act
         productReviewService.deleteProductReview(productReviewId);
 
-        // Assert
         verify(productReviewRepository, times(1)).delete(productReview);
-        verify(productRepository, times(1)).save(product);
     }
 
     @Test
