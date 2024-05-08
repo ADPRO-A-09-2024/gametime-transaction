@@ -138,7 +138,7 @@ public class ProductReviewServiceImplTest {
         when(productReviewRepository.findAll()).thenReturn(List.of(productReview1, productReview2));
 
         // Act
-        List<ProductReview> result = productReviewService.getProductReviewsByProduct(productId);
+        List<ProductReview> result = productReviewService.getProductReviewsByProduct(productId.toString());
 
         // Assert
         assertEquals(1, result.size());
@@ -156,7 +156,7 @@ public class ProductReviewServiceImplTest {
         when(productReviewRepository.findAll()).thenReturn(List.of(productReview1, productReview2));
 
         // Act
-        List<ProductReview> result = productReviewService.getProductReviewsByAuthor(authorId);
+        List<ProductReview> result = productReviewService.getProductReviewsByAuthor(authorId.toString());
 
         // Assert
         assertEquals(1, result.size());
@@ -205,7 +205,7 @@ public class ProductReviewServiceImplTest {
         when(productReviewRepository.save(any(ProductReview.class))).thenReturn(updatedProductReview);
 
         // Act
-        ProductReview result = productReviewService.updateProductReview(productReviewId, productReviewDTO);
+        ProductReview result = productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
 
         // Assert
         assertEquals(productReviewId, result.getId());
@@ -229,7 +229,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId, productReviewDTO);
+            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
         });
         assertEquals("Review not found", exception.getMessage());
     }
@@ -250,7 +250,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId, productReviewDTO);
+            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
         });
         assertEquals("Author not found", exception.getMessage());
     }
@@ -271,7 +271,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId, productReviewDTO);
+            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
         });
         assertEquals("Product not found", exception.getMessage());
     }
@@ -294,7 +294,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId, productReviewDTO);
+            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
         });
         assertEquals("Rating must be between 0 and 5", exception.getMessage());
 
@@ -307,7 +307,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId, productReviewDTO);
+            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
         });
         assertEquals("Rating must be between 0 and 5", exception.getMessage());
     }
@@ -328,7 +328,7 @@ public class ProductReviewServiceImplTest {
         when(productRepository.findById(product.getId())).thenReturn(java.util.Optional.of(product));
 
         // Act
-        productReviewService.deleteProductReview(productReviewId);
+        productReviewService.deleteProductReview(productReviewId.toString());
 
         verify(productReviewRepository, times(1)).delete(productReview);
     }
@@ -342,7 +342,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.deleteProductReview(productReviewId);
+            productReviewService.deleteProductReview(productReviewId.toString());
         });
         assertEquals("Review not found", exception.getMessage());
     }
@@ -386,7 +386,7 @@ public class ProductReviewServiceImplTest {
         verify(productRepository, times(1)).save(testProduct);
     }
 
-    @Test()
+    @Test
     public void testUpdateProductRatingProductNotFound() {
         // Arrange
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
@@ -396,5 +396,83 @@ public class ProductReviewServiceImplTest {
             productReviewService.updateProductRating(UUID.randomUUID());
         });
         assertEquals("Product not found", exception.getMessage());
+    }
+
+    @Test
+    void testValidateProductReviewID_Valid() {
+        String productReviewId = "123e4567-e89b-12d3-a456-556642440000";
+        assertEquals(productReviewId, productReviewService.validateProductReviewID(productReviewId).toString());
+    }
+
+    @Test
+    void testValidateProductReviewID_Invalid() {
+        String productReviewId = "invalid_id";
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateProductReviewID(productReviewId));
+    }
+
+    @Test
+    void testValidateAuthorID_Valid() {
+        String authorId = "123";
+        assertEquals(123, productReviewService.validateAuthorID(authorId));
+    }
+
+    @Test
+    void testValidateAuthorID_Invalid() {
+        String authorId = "invalid_id";
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateAuthorID(authorId));
+    }
+
+    @Test
+    void testValidateProductID_Valid() {
+        String productId = "123e4567-e89b-12d3-a456-556642440000";
+        assertEquals(productId, productReviewService.validateProductID(productId).toString());
+    }
+
+    @Test
+    void testValidateProductID_Invalid() {
+        String productId = "invalid_id";
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateProductID(productId));
+    }
+
+    @Test
+    void testValidateContent_Valid() {
+        String content = "This is a valid content.";
+        assertEquals(content, productReviewService.validateContent(content));
+    }
+
+    @Test
+    void testValidateContent_Null() {
+        String content = null;
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateContent(content));
+    }
+
+    @Test
+    void testValidateContent_Empty() {
+        String content = "";
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateContent(content));
+    }
+
+    @Test
+    void testValidateRating_Valid() {
+        String rating = "4.5";
+        assertEquals(4.5, productReviewService.validateRating(rating));
+    }
+
+    @Test
+    void testValidateRating_Invalid_LowerBound() {
+        String rating = "-1";
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateRating(rating));
+    }
+
+    @Test
+    void testValidateRating_Invalid_UpperBound() {
+        String rating = "5.1";
+        assertThrows(IllegalArgumentException.class, () -> productReviewService.validateRating(rating));
+    }
+
+    @Test
+    void testValidateRating_Invalid_NonNumeric() {
+        String rating = "not_a_number";
+        assertThrows(NumberFormatException.class, () -> productReviewService.validateRating(rating));
     }
 }
