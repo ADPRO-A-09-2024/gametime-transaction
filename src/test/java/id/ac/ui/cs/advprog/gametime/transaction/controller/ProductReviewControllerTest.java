@@ -13,7 +13,6 @@ import org.mockito.MockitoAnnotations;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.server.ResponseStatusException;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.ProductReview;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.ProductReviewDTO;
@@ -55,7 +54,7 @@ class ProductReviewControllerTest {
         UUID productId = UUID.randomUUID();
         List<ProductReview> reviews = new ArrayList<>();
         reviews.add(new ProductReview());
-        when(productReviewService.getProductReviewsByProduct(productId)).thenReturn(reviews);
+        when(productReviewService.getProductReviewsByProduct(productId.toString())).thenReturn(reviews);
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("productId", productId.toString());
@@ -69,25 +68,12 @@ class ProductReviewControllerTest {
     }
 
     @Test
-    void testGetProductReviewByProductWithInvalidProductId() {
-        // Arrange
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("productId", "invalid-id");
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.getProductReviewByProduct(requestBody);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
     void testGetProductReviewByAuthor() {
         // Arrange
         Integer authorId = 1;
         List<ProductReview> reviews = new ArrayList<>();
         reviews.add(new ProductReview());
-        when(productReviewService.getProductReviewsByAuthor(authorId)).thenReturn(reviews);
+        when(productReviewService.getProductReviewsByAuthor(authorId.toString())).thenReturn(reviews);
 
         Map<String, String> requestBody = new HashMap<>();
         requestBody.put("authorId", authorId.toString());
@@ -98,19 +84,6 @@ class ProductReviewControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(reviews, response.getBody());
-    }
-
-    @Test
-    void testGetProductReviewByAuthorWithInvalidAuthorId() {
-        // Arrange
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("authorId", "invalid-id");
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.getProductReviewByAuthor(requestBody);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 
     @Test
@@ -133,48 +106,6 @@ class ProductReviewControllerTest {
     }
 
     @Test
-    void testAddProductReviewWithInvalidAuthorId() {
-        // Arrange
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-        productReviewDTO.setAuthorId("invalid"); // Invalid author ID
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.addProductReview(productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
-    void testAddProductReviewWithInvalidProductId() {
-        // Arrange
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-        productReviewDTO.setAuthorId("1");
-        productReviewDTO.setProductId("invalid"); // Invalid product ID
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.addProductReview(productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
-    void testAddProductReviewWithInvalidRating() {
-        // Arrange
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-        productReviewDTO.setAuthorId("1");
-        productReviewDTO.setProductId(UUID.randomUUID().toString());
-        productReviewDTO.setRating("invalid"); // Invalid rating
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.addProductReview(productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
     void testUpdateProductReview() {
         // Arrange
         UUID productReviewId = UUID.randomUUID();
@@ -186,7 +117,7 @@ class ProductReviewControllerTest {
 
         ProductReview productReview = new ProductReview();
         productReview.setId(productReviewId);
-        when(productReviewService.updateProductReview(productReviewId, productReviewDTO)).thenReturn(productReview);
+        when(productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO)).thenReturn(productReview);
 
         // Act
         ResponseEntity<ProductReview> response = productReviewController.updateProductReview(productReviewId.toString(),
@@ -195,63 +126,6 @@ class ProductReviewControllerTest {
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(productReview, response.getBody());
-    }
-
-    @Test
-    void testUpdateProductReviewWithInvalidReviewId() {
-        // Arrange
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.updateProductReview("invalid-id", productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
-    void testUpdateProductReviewWithInvalidAuthorId() {
-        // Arrange
-        UUID productReviewId = UUID.randomUUID();
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-        productReviewDTO.setAuthorId("invalid"); // Invalid author ID
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.updateProductReview(productReviewId.toString(), productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
-    void testUpdateProductReviewWithInvalidProductId() {
-        // Arrange
-        UUID productReviewId = UUID.randomUUID();
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-        productReviewDTO.setAuthorId("1");
-        productReviewDTO.setProductId("invalid"); // Invalid product ID
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.updateProductReview(productReviewId.toString(), productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
-    }
-
-    @Test
-    void testUpdateProductReviewWithInvalidRating() {
-        // Arrange
-        UUID productReviewId = UUID.randomUUID();
-        ProductReviewDTO productReviewDTO = new ProductReviewDTO();
-        productReviewDTO.setAuthorId("1");
-        productReviewDTO.setProductId(UUID.randomUUID().toString());
-        productReviewDTO.setRating("invalid"); // Invalid rating
-
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.updateProductReview(productReviewId.toString(), productReviewDTO);
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
     }
 
     @Test
@@ -264,16 +138,7 @@ class ProductReviewControllerTest {
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Review deleted", response.getBody());
-    }
-
-    @Test
-    void testDeleteProductReviewWithInvalidReviewId() {
-        // Act & Assert
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            productReviewController.deleteProductReview("invalid-id");
-        });
-        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatusCode());
+        assertEquals("Review with id: " + productReviewId.toString() + " has been deleted", response.getBody());
     }
 
 }

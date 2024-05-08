@@ -1,8 +1,18 @@
 plugins {
 	java
     jacoco
+	id("org.sonarqube") version "5.0.0.4638"
 	id("org.springframework.boot") version "3.2.4"
 	id("io.spring.dependency-management") version "1.1.4"
+}
+
+sonar {
+  properties {
+    property("sonar.projectKey", "ADPRO-A-09-2024_gametime-transaction")
+    property("sonar.organization", "adpro-a-09-2024")
+    property("sonar.sources", "src/main")
+    property("sonar.tests", "src/test")
+  }
 }
 
 group = "id.ac.ui.cs.advprog.gametime"
@@ -62,6 +72,11 @@ tasks.test {
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
+
+	reports {
+        html.required = true
+        xml.required = true
+    }
 }
 
 tasks.withType<Test>().configureEach {

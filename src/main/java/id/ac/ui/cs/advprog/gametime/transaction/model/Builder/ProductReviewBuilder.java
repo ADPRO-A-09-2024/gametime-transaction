@@ -11,29 +11,21 @@ public class ProductReviewBuilder {
     private double rating = 0;
 
     public ProductReviewBuilder author(User author) {
-        if (author == null)
-            throw new IllegalArgumentException("Author cannot be null");
         this.author = author;
         return this;
     }
 
     public ProductReviewBuilder product(Product product) {
-        if (product == null)
-            throw new IllegalArgumentException("Product cannot be null");
         this.product = product;
         return this;
     }
 
     public ProductReviewBuilder content(String content) {
-        if (content == null || content.isEmpty())
-            throw new IllegalArgumentException("Content cannot be empty");
         this.content = content;
         return this;
     }
 
     public ProductReviewBuilder rating(double rating) {
-        if (rating < 0 || rating > 5)
-            throw new IllegalArgumentException("Rating must be between 0 and 5");
         this.rating = rating;
         return this;
     }

@@ -9,10 +9,15 @@ import java.util.UUID;
 public interface ProductReviewService {
     ProductReview addProductReview(ProductReviewDTO productReviewDTO);
     ProductReview getProductReviewById(UUID id);
-    List<ProductReview> getProductReviewsByProduct(UUID productId);
-    List<ProductReview> getProductReviewsByAuthor(Integer authorId);
+    List<ProductReview> getProductReviewsByProduct(String productId);
+    List<ProductReview> getProductReviewsByAuthor(String authorId);
     List<ProductReview> getAllProductReviews();
-    ProductReview updateProductReview(UUID productReviewId, ProductReviewDTO productReviewDTO);
-    void deleteProductReview(UUID productReviewId);
+    ProductReview updateProductReview(String productReviewId, ProductReviewDTO productReviewDTO);
+    void deleteProductReview(String productReviewId);
     void deleteAllProductReviews();
+    UUID validateProductReviewID(String productReviewId);
+    int validateAuthorID(String authorId);
+    UUID validateProductID(String productId);
+    String validateContent(String content);
+    double validateRating(String rating);
 }
