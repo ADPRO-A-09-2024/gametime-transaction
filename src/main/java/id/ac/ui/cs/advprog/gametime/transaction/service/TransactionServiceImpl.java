@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import com.google.gson.Gson;
+import id.ac.ui.cs.advprog.gametime.transaction.TransactionApplication;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
@@ -10,12 +11,14 @@ import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.TransactionRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -75,7 +78,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction payTransaction(UUID id) {
+    @Async
+    public CompletableFuture<Transaction> payTransaction(UUID id) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
 
@@ -85,7 +89,7 @@ public class TransactionServiceImpl implements TransactionService {
         int sellerBalance = seller.getBalance();
         int price = transaction.getPrice();
 
-        if (buyerBalance < price) {
+        if (buyerBalance < price ) {
             transaction.setPaymentStatus(PaymentStatus.FAILED.name());
         } else {
             buyer.setBalance(buyerBalance - price);
@@ -93,7 +97,22 @@ public class TransactionServiceImpl implements TransactionService {
             transaction.setPaymentStatus(PaymentStatus.SUCCESS.name());
         }
 
-        return transactionRepository.save(transaction);
+        return CompletableFuture.completedFuture(transactionRepository.save(transaction));
+    }
+
+    @Override
+    @Async
+    public CompletableFuture<List<Transaction>> getOtherWaitingTransactions(UUID id) {
+        Integer buyerId = transactionRepository.findById(id).orElseThrow()
+                .getBuyer()
+                .getId();
+
+        return CompletableFuture.completedFuture(
+                transactionRepository.findAll().stream()
+                        .filter(transaction -> !transaction.getId().equals(id))
+                        .filter(transaction -> transaction.getBuyer().getId().equals(buyerId))
+                        .filter(transaction -> transaction.getPaymentStatus().equals(PaymentStatus.WAITING.name()))
+                        .toList());
     }
 
     private int getPrice(List<Product> products) {

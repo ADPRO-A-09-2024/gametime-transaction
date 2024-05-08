@@ -2,9 +2,12 @@ package id.ac.ui.cs.advprog.gametime.transaction.controller;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import id.ac.ui.cs.advprog.gametime.transaction.dto.PayTransactionResponseDTO;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
@@ -90,7 +93,7 @@ public class TransactionController {
     }
 
     @PostMapping("/pay/{transactionId}")
-    public ResponseEntity<Transaction> payTransaction(@PathVariable("transactionId") String transactionId) {
+    public ResponseEntity<PayTransactionResponseDTO> payTransaction(@PathVariable("transactionId") String transactionId) throws ExecutionException, InterruptedException {
         UUID id;
         try {
             id = UUID.fromString(transactionId);
@@ -99,6 +102,14 @@ public class TransactionController {
                     HttpStatus.BAD_REQUEST, "Transaction ID is not valid");
         }
 
-        return ResponseEntity.ok(transactionService.payTransaction(id));
+        CompletableFuture<Transaction> currentTransaction = transactionService.payTransaction(id);
+        CompletableFuture<List<Transaction>> otherWaitingTransactions = transactionService.getOtherWaitingTransactions(id);
+
+        CompletableFuture.allOf(currentTransaction, otherWaitingTransactions).join();
+
+        PayTransactionResponseDTO response = new PayTransactionResponseDTO(
+                currentTransaction.get(), otherWaitingTransactions.get());
+
+        return ResponseEntity.ok(response);
     }
 }
