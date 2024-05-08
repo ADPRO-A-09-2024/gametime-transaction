@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.service.strategy.SearchStrategy;
 import id.ac.ui.cs.advprog.gametime.transaction.service.strategy.SearchStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,8 +19,12 @@ import static org.mockito.Mockito.when;
 
 public class ProductServiceTest {
 
+
     @Mock
     private SearchStrategyFactory searchStrategyFactory;
+
+    @Mock
+    private ProductRepository productRepository;
 
     @Mock
     private SearchStrategy searchStrategy;
@@ -38,7 +43,7 @@ public class ProductServiceTest {
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);
 
-        when(searchStrategyFactory.getStrategy("name")).thenReturn(searchStrategy);
+        when(searchStrategyFactory.getStrategy("name", productRepository)).thenReturn(searchStrategy);
         when(searchStrategy.search("Test")).thenReturn(products);
 
         List<Product> result = productService.search("name", "Test");
@@ -48,7 +53,7 @@ public class ProductServiceTest {
 
     @Test
     public void testSearchInvalidType() {
-        when(searchStrategyFactory.getStrategy("invalid")).thenReturn(null);
+        when(searchStrategyFactory.getStrategy("invalid", productRepository)).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> productService.search("invalid", "Test"));
     }

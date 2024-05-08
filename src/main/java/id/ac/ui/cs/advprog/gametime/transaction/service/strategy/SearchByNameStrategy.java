@@ -10,6 +10,10 @@ public class SearchByNameStrategy implements SearchStrategy {
 
     private ProductRepository productRepository;
 
+    public SearchByNameStrategy(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
     @Override
     public List<Product> search(String name) {
         return productRepository.findByNameContaining(name);

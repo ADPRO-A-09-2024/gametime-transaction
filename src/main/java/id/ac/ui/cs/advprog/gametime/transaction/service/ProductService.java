@@ -9,11 +9,17 @@ import java.util.List;
 
 @Service
 public class ProductService {
+    private final SearchStrategyFactory searchStrategyFactory;
+    private final ProductRepository productRepository;
+
     @Autowired
-    private SearchStrategyFactory SearchStrategyFactory;
+    public ProductService(SearchStrategyFactory searchStrategyFactory, ProductRepository productRepository) {
+        this.searchStrategyFactory = searchStrategyFactory;
+        this.productRepository = productRepository;
+    }
 
     public List<Product> search(String type, String term) {
-        SearchStrategy strategy = SearchStrategyFactory.getStrategy(type);
+        SearchStrategy strategy = searchStrategyFactory.getStrategy(type, productRepository);
         if (strategy != null) {
             return strategy.search(term);
         }

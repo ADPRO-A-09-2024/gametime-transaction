@@ -7,7 +7,11 @@ import java.util.List;
 
 public class SearchByCategoryStrategy implements SearchStrategy {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public SearchByCategoryStrategy(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public List<Product> search(String category) {

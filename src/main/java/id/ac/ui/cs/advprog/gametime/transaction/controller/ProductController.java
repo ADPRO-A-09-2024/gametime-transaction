@@ -1,4 +1,3 @@
-
 package id.ac.ui.cs.advprog.gametime.transaction.controller;
 
 import java.util.List;
@@ -23,9 +22,9 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-    
 
-     @GetMapping("/search/{type}/{term}")
+
+    @GetMapping("/search/{type}/{term}")
     public ResponseEntity<List<Product>> searchProduct(@PathVariable String type, @PathVariable String term) {
         return ResponseEntity.ok(productService.search(type, term));
     }
