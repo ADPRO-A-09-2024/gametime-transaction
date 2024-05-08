@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import java.util.concurrent.CompletableFuture;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,4 +48,62 @@ public class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("[{'name': 'Test Product'}]"));
     }
+
+
+    @Test
+    public void testFilterByRatingLessThanEqual() throws Exception {
+        Product product = new Product();
+        product.setRating(4.5);
+        List<Product> products = Arrays.asList(product);
+
+        when(productService.filterByRatingLessThanEqual(5.0)).thenReturn(CompletableFuture.completedFuture(products));
+
+        mockMvc.perform(get("/product/filter/rating/less/5.0"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{'rating': 4.5}]"));
+    }
+
+    @Test
+    public void testFilterByRatingGreaterThanEqual() throws Exception {
+        Product product = new Product();
+        product.setRating(4.5);
+        List<Product> products = Arrays.asList(product);
+
+        when(productService.filterByRatingGreaterThanEqual(4.0)).thenReturn(CompletableFuture.completedFuture(products));
+
+        mockMvc.perform(get("/product/filter/rating/greater/4.0"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{'rating': 4.5}]"));
+    }
+
+    @Test
+    public void testFilterByPriceLessThanEqual() throws Exception {
+        Product product = new Product();
+        product.setPrice(100);
+        List<Product> products = Arrays.asList(product);
+
+        when(productService.filterByPriceLessThanEqual(150)).thenReturn(CompletableFuture.completedFuture(products));
+
+        mockMvc.perform(get("/product/filter/price/less/150"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{'price': 100}]"));
+    }
+
+    @Test
+    public void testFilterByPriceGreaterThanEqual() throws Exception {
+        Product product = new Product();
+        product.setPrice(100);
+        List<Product> products = Arrays.asList(product);
+
+        when(productService.filterByPriceGreaterThanEqual(50)).thenReturn(CompletableFuture.completedFuture(products));
+
+        mockMvc.perform(get("/product/filter/price/greater/50"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[{'price': 100}]"));
+    }
+
+
+
+
+
 }

@@ -10,7 +10,16 @@ import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
+
+    //Searching
     List<Product> findByNameContaining(String name);
     List<Product> findByCategoryContaining(String category);
     List<Product> findByRating(double rating);
+
+    //Filtering
+    List<Product> findByRatingGreaterThanEqual(double rating);
+    List<Product> findByRatingLessThanEqual(double rating);
+    List<Product> findByPriceLessThanEqual(int price);
+    List<Product> findByPriceGreaterThanEqual(int price);
+
 }
