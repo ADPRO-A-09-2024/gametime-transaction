@@ -1,5 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model;
 
+import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.CartBuilder;
+import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.ProductReviewBuilder;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +24,8 @@ public class Cart {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private List<Product> productList;
+
+    public static CartBuilder builder() {
+        return new CartBuilder();
+    }
 }
