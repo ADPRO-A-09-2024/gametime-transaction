@@ -1,15 +1,13 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Cart;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
-import java.util.List;
+import id.ac.ui.cs.advprog.gametime.transaction.model.CartItem;
 import java.util.UUID;
 
 public interface CartService {
-    Cart addProductToCart(UUID cartId, UUID productId, int quantity);
-    Cart removeProductFromCart(UUID cartId, UUID productId);
-    Cart getCartById(UUID cartId);
-    List<Cart> getAllCarts();
-    Cart updateProductQuantity(UUID cartId, UUID productId, int quantity);
-    Cart clearCart(UUID cartId);
+    Cart getCartByUserId(UUID userId);
+    Cart addItemToCart(UUID userId, CartItem item);
+    Cart removeItemFromCart(UUID userId, UUID itemId);
+    Cart updateItemQuantity(UUID userId, UUID itemId, int quantity);
+    void clearCart(UUID userId);
 }
