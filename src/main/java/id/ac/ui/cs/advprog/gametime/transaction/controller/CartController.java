@@ -9,6 +9,8 @@ import id.ac.ui.cs.advprog.gametime.transaction.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.concurrent.CompletableFuture;
+import org.springframework.http.HttpStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,18 +32,19 @@ public class CartController {
     }
 
     @PostMapping("/{userId}/items")
-    public ResponseEntity<CartDTO> addItemToCart(@PathVariable UUID userId, @RequestBody CartItemDTO itemDto) {
-        Cart cart = cartService.addItemToCart(userId, convertToEntity(itemDto));
-        return ResponseEntity.ok(convertToDto(cart));
+    public CompletableFuture<ResponseEntity<CartDTO>> addItemToCart(@PathVariable UUID userId, @RequestBody CartItemDTO itemDto) {
+        // Convert DTO to entity if required, then call the service
+        return cartService.addItemToCart(userId, convertToEntity(itemDto))
+                .thenApply(cart -> ResponseEntity.ok(convertToDto(cart)))
+                .exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
     @DeleteMapping("/{userId}/items/{itemId}")
-    public ResponseEntity<CartDTO> removeItemFromCart(@PathVariable UUID userId, @PathVariable UUID itemId) {
-        Cart cart = cartService.removeItemFromCart(userId, itemId);
-        return ResponseEntity.ok(convertToDto(cart));
+    public CompletableFuture<ResponseEntity<CartDTO>> removeItemFromCart(@PathVariable UUID userId, @PathVariable UUID itemId) {
+        return cartService.removeItemFromCart(userId, itemId)
+                .thenApply(cart -> ResponseEntity.ok(convertToDto(cart)))
+                .exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
-
-    // Additional methods for updating items, clearing cart, etc.
 
     private CartDTO convertToDto(Cart cart) {
         CartDTO dto = new CartDTO();
