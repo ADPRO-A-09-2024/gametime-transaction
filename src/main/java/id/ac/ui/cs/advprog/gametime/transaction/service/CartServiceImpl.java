@@ -6,10 +6,12 @@ import id.ac.ui.cs.advprog.gametime.transaction.repository.CartRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.CartItemRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -25,29 +27,35 @@ public class CartServiceImpl implements CartService {
         return cartRepository.findById(userId).orElse(null);
     }
 
+    @Async
     @Override
-    @Transactional
-    public Cart addItemToCart(UUID userId, CartItem item) {
-        Cart cart = getCartByUserId(userId);
-        if (cart != null) {
-            cart.getItems().add(item);
-            cartItemRepository.save(item);
-            return cartRepository.save(cart);
-        }
-        return null;
+    public CompletableFuture<Cart> addItemToCart(UUID userId, CartItem item) {
+        return CompletableFuture.supplyAsync(() -> {
+            Cart cart = getCartByUserId(userId);
+            if (cart != null) {
+                cart.getItems().add(item);
+                cartItemRepository.save(item);
+                return cartRepository.save(cart);
+            }
+            return null;
+        });
     }
 
+
+    @Async
     @Override
-    @Transactional
-    public Cart removeItemFromCart(UUID userId, UUID itemId) {
-        Cart cart = getCartByUserId(userId);
-        if (cart != null) {
-            cart.getItems().removeIf(item -> item.getId().equals(itemId));
-            cartItemRepository.deleteById(itemId);
-            return cartRepository.save(cart);
-        }
-        return null;
+    public CompletableFuture<Cart> removeItemFromCart(UUID userId, UUID itemId) {
+        return CompletableFuture.supplyAsync(() -> {
+            Cart cart = getCartByUserId(userId);
+            if (cart != null) {
+                cart.getItems().removeIf(item -> item.getId().equals(itemId));
+                cartItemRepository.deleteById(itemId);
+                return cartRepository.save(cart);
+            }
+            return null;
+        });
     }
+
 
     @Override
     @Transactional
@@ -61,14 +69,16 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+    @Async
     @Override
-    @Transactional
-    public void clearCart(UUID userId) {
-        Cart cart = getCartByUserId(userId);
-        if (cart != null) {
-            cartItemRepository.deleteAll(cart.getItems());
-            cart.setItems(null);
-            cartRepository.save(cart);
-        }
+    public CompletableFuture<Void> clearCart(UUID userId) {
+        return CompletableFuture.runAsync(() -> {
+            Cart cart = getCartByUserId(userId);
+            if (cart != null) {
+                cartItemRepository.deleteAll(cart.getItems());
+                cart.setItems(null);
+                cartRepository.save(cart);
+            }
+        });
     }
 }
