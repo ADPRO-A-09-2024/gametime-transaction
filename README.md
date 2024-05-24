@@ -15,3 +15,6 @@ https://transaction-p5zxnxph7q-ew.a.run.app/
 
 ## Container Diagram
 ![container-diagram](src/main/resources/static/container.jpg)
+
+## Deployment Diagram
+![deployment-diagram](src/main/resources/static/deployment.jpg)
