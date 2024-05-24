@@ -15,3 +15,10 @@ https://transaction-p5zxnxph7q-ew.a.run.app/
 
 ## Container Diagram
 ![container-diagram](src/main/resources/static/container.jpg)
+
+# Component Diagram
+![component-diagram](src/main/resources/static/component.png)
+
+# Code Diagrams
+![code-diagram-1](src/main/resources/static/code-1.png)
+![code-diagram-2](src/main/resources/static/code-2.png)
