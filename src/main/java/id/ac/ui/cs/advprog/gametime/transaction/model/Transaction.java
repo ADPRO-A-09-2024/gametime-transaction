@@ -1,7 +1,6 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.ProductBuilder;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.TransactionBuilder;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -21,17 +20,17 @@ public class Transaction {
     @Column(nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "buyer_id", referencedColumnName = "id")
     private User buyer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Product> products;
 
     @Column(nullable = false)
