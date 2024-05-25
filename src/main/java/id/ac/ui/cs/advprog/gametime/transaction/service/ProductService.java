@@ -13,5 +13,4 @@ public interface ProductService {
     List<Product> getProductsBySeller(Integer sellerId);
     List<Product> getAllProducts();
     Product updateProduct(UUID id, UpdateProductDTO updateProductDTO);
-    List<Product> search(String type, String term);
 }

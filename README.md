@@ -19,11 +19,17 @@ https://transaction-p5zxnxph7q-ew.a.run.app/
 ## Deployment Diagram
 ![deployment-diagram](src/main/resources/static/deployment.jpg)
 
+## Component Diagram (Kevin) 
+![img_3.png](src/main/resources/static/img_3.png)
+
 ## Component Diagram (Robert)
 ![component-diagram](src/main/resources/static/component.jpg)
 
 ## Component Diagram (Nadya)
 ![component-diagram](src/main/resources/static/component.png)
+
+## Code Diagram (Kevin)
+![img_4.png](src/main/resources/static/img_4.png)
 
 ## Code Diagram (Robert)
 ![code-diagram](src/main/resources/static/code.jpg)
@@ -51,4 +57,3 @@ Kedua, pembagian ini akan meningkatkan ketahanan sistem secara keseluruhan. Jika
 Ketiga, dari segi keamanan, segmentasi ini memungkinkan penerapan kebijakan keamanan yang lebih spesifik dan terkontrol untuk setiap service. Misalnya, layanan yang menangani transaksi dapat memiliki lapisan keamanan yang lebih ketat dibandingkan dengan layanan yang menangani ulasan produk.
 
 Dengan mempertimbangkan semua faktor tersebut, kami percaya bahwa memecah service transaction menjadi beberapa microservice adalah langkah strategis yang tepat untuk memastikan fleksibilitas, skalabilitas, dan ketahanan sistem kami di masa depan.
-

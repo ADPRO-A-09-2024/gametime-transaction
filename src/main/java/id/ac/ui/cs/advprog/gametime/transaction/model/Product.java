@@ -18,7 +18,7 @@ public class Product {
     @Column(nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;

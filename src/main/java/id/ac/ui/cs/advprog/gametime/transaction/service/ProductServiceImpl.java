@@ -76,13 +76,4 @@ public class ProductServiceImpl implements ProductService {
 
         return productRepository.save(product);
     }
-
-    @Override
-    public List<Product> search(String type, String term) {
-        SearchStrategy strategy = SearchStrategyFactory.getStrategy(type);
-        if (strategy != null) {
-            return strategy.search(term);
-        }
-        throw new IllegalArgumentException("Invalid search type: " + type);
-    }
 }
