@@ -38,12 +38,6 @@ public class TransactionController {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Seller ID is not valid");
         }
-        try {
-            new Gson().fromJson(transactionDTO.getProducts(), Product[].class);
-        } catch (JsonSyntaxException e) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST, "Products are not valid");
-        }
 
         return ResponseEntity.ok(transactionService.createTransaction(transactionDTO));
     }
