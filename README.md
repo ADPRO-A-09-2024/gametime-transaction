@@ -25,18 +25,19 @@ Dengan pendekatan ini, Layanan A dan B dapat beroperasi secara independen satu s
 Bagian ScreenShot High Level Networking (rest Controller):
 
 
-![img.png](img.png)
+![img.png](src/main/resources/static/img.png)
 
-![img_1.png](img_1.png)
+![img_1.png](src/main/resources/static/img_1.png)
 
-![img_2.png](img_2.png)
+![img_2.png](src/main/resources/static/img_2.png)
 
 
 
 Software Architecture part 2:
 
-Component diagram: 
-![img_3.png](img_3.png)
-Code Diagram:
-![img_4.png](img_4.png)
+## Component Diagram (Kevin)
+![img_3.png](src/main/resources/static/img_3.png)
+
+## Code Diagram (Kevin)
+![img_4.png](src/main/resources/static/img_4.png)
 
