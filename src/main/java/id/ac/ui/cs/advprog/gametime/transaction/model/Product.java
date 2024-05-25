@@ -1,5 +1,6 @@
- package id.ac.ui.cs.advprog.gametime.transaction.model;
+package id.ac.ui.cs.advprog.gametime.transaction.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.ProductBuilder;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,7 +18,8 @@ public class Product {
     @Column(nullable = false)
     private UUID id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     private User seller;
 
