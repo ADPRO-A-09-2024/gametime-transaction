@@ -10,33 +10,50 @@ https://transaction-p5zxnxph7q-ew.a.run.app/
 4. Robert Benyamin - 2206817383
 5. Nadya Hoesin - 2106651673
 
+## System Context Diagram
+![system-context-diagram](src/main/resources/static/context.jpg)
 
-Bagian Software Architecture part 1:
+## Container Diagram
+![container-diagram](src/main/resources/static/container.jpg)
 
-Arsitektur perangkat lunak adalah kerangka kerja yang mendefinisikan struktur dan perilaku sistem perangkat lunak. Ini mencakup komponen-komponen sistem, hubungan antara komponen tersebut, dan bagaimana mereka berinteraksi satu sama lain. Arsitektur perangkat lunak juga mencakup prinsip-prinsip dan pola yang digunakan untuk merancang dan membangun sistem tersebut. Keputusan arsitektural yang dibuat akan mempengaruhi kualitas sistem seperti keandalan, kinerja, dan keamanan.  Microservices adalah gaya arsitektur perangkat lunak yang merancang aplikasi sebagai kumpulan layanan yang dapat dikerjakan secara independen. Setiap layanan ini berjalan dalam prosesnya sendiri dan berkomunikasi dengan mekanisme ringan, seringkali sebuah HTTP resource API. Layanan ini dibangun di sekitar kemampuan bisnis, dan tim yang independen dapat mengembangkan, menerapkan, dan menskalakan layanan mereka secara independen.  RabbitMQ adalah teknologi message broker yang digunakan dalam arsitektur berbasis microservices untuk memfasilitasi komunikasi antar layanan. Dalam konteks microservices, RabbitMQ biasanya digunakan untuk mengimplementasikan pola komunikasi asinkron seperti Event-Driven Architecture atau Message Queue.  Dalam skenario kerja RabbitMQ, layanan pengirim akan mengirim pesan ke antrian dalam RabbitMQ, dan layanan penerima akan mendengarkan antrian tersebut untuk menerima pesan. Pesan tersebut kemudian dapat diproses oleh layanan penerima tanpa harus menunggu layanan pengirim. Ini memungkinkan layanan untuk beroperasi secara independen satu sama lain, meningkatkan keandalan dan skalabilitas sistem secara keseluruhan.
+## Deployment Diagram
+![deployment-diagram](src/main/resources/static/deployment.jpg)
 
-Contoh sederhana penggunaan RabbitMQ dalam aplikasi berbasis microservices:  
-Layanan A perlu memperbarui beberapa data dan memberi tahu layanan B tentang perubahan tersebut.
-Layanan A melakukan perubahan pada datanya dan kemudian mengirim pesan ke antrian RabbitMQ yang berisi detail tentang perubahan tersebut.
-Layanan B mendengarkan antrian RabbitMQ dan menerima pesan tentang perubahan data dari Layanan A.
-Layanan B kemudian dapat memproses pesan tersebut dan melakukan tindakan yang diperlukan berdasarkan perubahan data tersebut.
-Dengan pendekatan ini, Layanan A dan B dapat beroperasi secara independen satu sama lain. Jika Layanan B turun atau sibuk, Layanan A masih dapat terus beroperasi dan mengirim pesan ke antrian. Begitu Layanan B kembali online atau siap untuk memproses pesan baru, ia dapat mengambil pesan dari antrian dan memprosesnya.
+## Component Diagram (Kevin) 
+![img_3.png](src/main/resources/static/img_3.png)
 
-Bagian ScreenShot High Level Networking (rest Controller):
+## Component Diagram (Robert)
+![component-diagram](src/main/resources/static/component.jpg)
 
+## Component Diagram (Nadya)
+![component-diagram](src/main/resources/static/component.png)
 
-![img.png](img.png)
+## Code Diagram (Kevin)
+![img_4.png](src/main/resources/static/img_4.png)
 
-![img_1.png](img_1.png)
+## Code Diagram (Robert)
+![code-diagram](src/main/resources/static/code.jpg)
 
-![img_2.png](img_2.png)
+## Code Diagrams (Nadya)
+![code-diagram-1](src/main/resources/static/code-1.png)
+![code-diagram-2](src/main/resources/static/code-2.png)
 
+## Future System Context Diagram
+![system-context-diagram](src/main/resources/static/future-context.jpg)
 
+## Future Container Diagram
+![container-diagram](src/main/resources/static/future-container.jpg)
 
-Software Architecture part 2:
+## Future Deployment Diagram
+![deployment-diagram](src/main/resources/static/future-deployment.jpg)
 
-Component diagram: 
-![img_3.png](img_3.png)
-Code Diagram:
-![img_4.png](img_4.png)
+## Explanation
+Berdasarkan diskusi kelompok A-9, kami merasa bahwa untuk arsitektur ke depannya, kami akan memecah service transaction menjadi beberapa service. Keputusan ini didasarkan pada beberapa pertimbangan utama yang kami yakini akan memberikan manfaat signifikan bagi pengembangan dan pemeliharaan sistem kami.
 
+Pertama, pemecahan service transaction menjadi beberapa service yang lebih kecil dan spesifik akan meningkatkan skalabilitas sistem. Dengan layanan yang lebih tersegmentasi, masing-masing service dapat diskalakan secara independen sesuai dengan kebutuhan beban kerja spesifiknya. Misalnya, beban pada service yang mengurus penjualan produk mungkin berbeda dengan beban pada service yang mengurus ulasan produk, sehingga skalabilitas yang terpisah memungkinkan penggunaan sumber daya yang lebih efisien.
+
+Kedua, pembagian ini akan meningkatkan ketahanan sistem secara keseluruhan. Jika satu service mengalami masalah atau downtime, service lainnya tetap dapat beroperasi tanpa terganggu. Hal ini penting untuk menjaga ketersediaan layanan bagi pengguna akhir, terutama dalam sistem yang menangani transaksi dan ulasan produk yang sangat dinamis.
+
+Ketiga, dari segi keamanan, segmentasi ini memungkinkan penerapan kebijakan keamanan yang lebih spesifik dan terkontrol untuk setiap service. Misalnya, layanan yang menangani transaksi dapat memiliki lapisan keamanan yang lebih ketat dibandingkan dengan layanan yang menangani ulasan produk.
+
+Dengan mempertimbangkan semua faktor tersebut, kami percaya bahwa memecah service transaction menjadi beberapa microservice adalah langkah strategis yang tepat untuk memastikan fleksibilitas, skalabilitas, dan ketahanan sistem kami di masa depan.

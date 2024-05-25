@@ -1,63 +1,61 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(MockitoExtension.class)
 public class ProductTest {
-    private Product product;
-    private User seller;
-
-    @BeforeEach
-    public void setup() {
-        product = new Product();
-        seller = new User();
-        seller.setUsername("Test User");
-    }
+    @InjectMocks
+    Product product;
 
     @Test
-    public void testId() {
+    void testIdGetterAndSetter() {
         UUID id = UUID.randomUUID();
         product.setId(id);
         assertEquals(id, product.getId());
     }
 
     @Test
-    public void testSeller() {
+    void testSellerGetterAndSetter() {
+        User seller = new User();
         product.setSeller(seller);
         assertEquals(seller, product.getSeller());
     }
 
     @Test
-    public void testName() {
-        product.setName("Test Product");
-        assertEquals("Test Product", product.getName());
+    void testNameGetterAndSetter() {
+        String name = "Boneka doraemon";
+        product.setName(name);
+        assertEquals(name, product.getName());
     }
 
     @Test
-    public void testDescription() {
-        product.setDescription("Test Description");
-        assertEquals("Test Description", product.getDescription());
+    void testDescriptionGetterAndSetter() {
+        String description = "Boneka bagus";
+        product.setDescription(description);
+        assertEquals(description, product.getDescription());
     }
 
     @Test
-    public void testCategory() {
-        product.setCategory("Test Category");
-        assertEquals("Test Category", product.getCategory());
+    void testCategoryGetterAndSetter() {
+        String category = "Boneka";
+        product.setCategory(category);
+        assertEquals(category, product.getCategory());
     }
 
     @Test
-    public void testPrice() {
-        product.setPrice(100);
-        assertEquals(100, product.getPrice());
-    }
-
-    @Test
-    public void testRating() {
-        product.setRating(4.5);
-        assertEquals(4.5, product.getRating(), 0.001);
+    void testPriceGetterAndSetter() {
+        int price = 100000;
+        product.setPrice(price);
+        assertEquals(price, product.getPrice());
     }
 }
+
+

@@ -12,9 +12,9 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class SearchService {
     private final SearchStrategyFactory searchStrategyFactory;
+    @Autowired
     private final SearchRepository searchRepository;
 
-    @Autowired
     public SearchService(SearchStrategyFactory searchStrategyFactory, SearchRepository searchRepository) {
         this.searchStrategyFactory = searchStrategyFactory;
         this.searchRepository = searchRepository;
