@@ -22,8 +22,15 @@ https://transaction-p5zxnxph7q-ew.a.run.app/
 ## Component Diagram (Robert)
 ![component-diagram](src/main/resources/static/component.jpg)
 
+## Component Diagram (Nadya)
+![component-diagram](src/main/resources/static/component.png)
+
 ## Code Diagram (Robert)
 ![code-diagram](src/main/resources/static/code.jpg)
+
+## Code Diagrams (Nadya)
+![code-diagram-1](src/main/resources/static/code-1.png)
+![code-diagram-2](src/main/resources/static/code-2.png)
 
 ## Future System Context Diagram
 ![system-context-diagram](src/main/resources/static/future-context.jpg)

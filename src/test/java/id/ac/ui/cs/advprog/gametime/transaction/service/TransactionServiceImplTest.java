@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -243,7 +245,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    void testPayTransactionSuccess() {
+    void testPayTransactionSuccess() throws ExecutionException, InterruptedException {
         User seller = new User();
         seller.setBalance(0);
         User buyer = new User();
@@ -259,7 +261,7 @@ public class TransactionServiceImplTest {
         when(transactionRepository.findById(id)).thenReturn(Optional.of(transaction));
         when(transactionRepository.save(transaction)).thenReturn(transaction);
 
-        Transaction transactionFromPay = transactionService.payTransaction(id);
+        Transaction transactionFromPay = transactionService.payTransaction(id).get();
         assertEquals(transaction, transactionFromPay);
         assertEquals("SUCCESS", transaction.getPaymentStatus());
         assertEquals(0, buyer.getBalance());
@@ -269,7 +271,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    void testPayTransactionFailed() {
+    void testPayTransactionFailed() throws ExecutionException, InterruptedException {
         User seller = new User();
         seller.setBalance(0);
         User buyer = new User();
@@ -285,7 +287,7 @@ public class TransactionServiceImplTest {
         when(transactionRepository.findById(id)).thenReturn(Optional.of(transaction));
         when(transactionRepository.save(transaction)).thenReturn(transaction);
 
-        Transaction transactionFromPay = transactionService.payTransaction(id);
+        Transaction transactionFromPay = transactionService.payTransaction(id).get();
         assertEquals(transaction, transactionFromPay);
         assertEquals("FAILED", transaction.getPaymentStatus());
         assertEquals(50000, buyer.getBalance());
