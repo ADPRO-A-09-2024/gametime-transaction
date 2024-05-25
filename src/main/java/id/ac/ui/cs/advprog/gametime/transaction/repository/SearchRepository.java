@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, UUID> {
+public interface SearchRepository extends JpaRepository<Product, UUID> {
 
     //Searching
     List<Product> findByNameContaining(String name);

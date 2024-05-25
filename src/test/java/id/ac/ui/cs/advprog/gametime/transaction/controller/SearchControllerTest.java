@@ -1,13 +1,12 @@
 package id.ac.ui.cs.advprog.gametime.transaction.controller;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
-import id.ac.ui.cs.advprog.gametime.transaction.service.ProductService;
+import id.ac.ui.cs.advprog.gametime.transaction.service.SearchService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.concurrent.CompletableFuture;
@@ -20,20 +19,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-public class ProductControllerTest {
+public class SearchControllerTest {
 
     @Mock
-    private ProductService productService;
+    private SearchService searchService;
 
     @InjectMocks
-    private ProductController productController;
+    private SearchController searchController;
 
     private MockMvc mockMvc;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(searchController).build();
     }
 
     @Test
@@ -42,7 +41,7 @@ public class ProductControllerTest {
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);
 
-        when(productService.search("name", "Test")).thenReturn(products);
+        when(searchService.search("name", "Test")).thenReturn(products);
 
         mockMvc.perform(get("/product/search/name/Test"))
                 .andExpect(status().isOk())
@@ -56,7 +55,7 @@ public class ProductControllerTest {
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
 
-        when(productService.filterByRatingLessThanEqual(5.0)).thenReturn(CompletableFuture.completedFuture(products));
+        when(searchService.filterByRatingLessThanEqual(5.0)).thenReturn(CompletableFuture.completedFuture(products));
 
         mockMvc.perform(get("/product/filter/rating/less/5.0"))
                 .andExpect(status().isOk())
@@ -69,7 +68,7 @@ public class ProductControllerTest {
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
 
-        when(productService.filterByRatingGreaterThanEqual(4.0)).thenReturn(CompletableFuture.completedFuture(products));
+        when(searchService.filterByRatingGreaterThanEqual(4.0)).thenReturn(CompletableFuture.completedFuture(products));
 
         mockMvc.perform(get("/product/filter/rating/greater/4.0"))
                 .andExpect(status().isOk())
@@ -82,7 +81,7 @@ public class ProductControllerTest {
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
 
-        when(productService.filterByPriceLessThanEqual(150)).thenReturn(CompletableFuture.completedFuture(products));
+        when(searchService.filterByPriceLessThanEqual(150)).thenReturn(CompletableFuture.completedFuture(products));
 
         mockMvc.perform(get("/product/filter/price/less/150"))
                 .andExpect(status().isOk())
@@ -95,7 +94,7 @@ public class ProductControllerTest {
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
 
-        when(productService.filterByPriceGreaterThanEqual(50)).thenReturn(CompletableFuture.completedFuture(products));
+        when(searchService.filterByPriceGreaterThanEqual(50)).thenReturn(CompletableFuture.completedFuture(products));
 
         mockMvc.perform(get("/product/filter/price/greater/50"))
                 .andExpect(status().isOk())

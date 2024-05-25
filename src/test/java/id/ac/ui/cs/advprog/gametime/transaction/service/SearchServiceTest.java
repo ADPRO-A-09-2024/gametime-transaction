@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
-import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.SearchRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.service.strategy.SearchStrategy;
 import id.ac.ui.cs.advprog.gametime.transaction.service.strategy.SearchStrategyFactory;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,20 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class ProductServiceTest {
+public class SearchServiceTest {
 
 
     @Mock
     private SearchStrategyFactory searchStrategyFactory;
 
     @Mock
-    private ProductRepository productRepository;
+    private SearchRepository searchRepository;
 
     @Mock
     private SearchStrategy searchStrategy;
 
     @InjectMocks
-    private ProductService productService;
+    private SearchService searchService;
 
     @BeforeEach
     public void setup() {
@@ -44,19 +44,19 @@ public class ProductServiceTest {
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);
 
-        when(searchStrategyFactory.getStrategy("name", productRepository)).thenReturn(searchStrategy);
+        when(searchStrategyFactory.getStrategy("name", searchRepository)).thenReturn(searchStrategy);
         when(searchStrategy.search("Test")).thenReturn(products);
 
-        List<Product> result = productService.search("name", "Test");
+        List<Product> result = searchService.search("name", "Test");
 
         assertEquals(products, result);
     }
 
     @Test
     public void testSearchInvalidType() {
-        when(searchStrategyFactory.getStrategy("invalid", productRepository)).thenReturn(null);
+        when(searchStrategyFactory.getStrategy("invalid", searchRepository)).thenReturn(null);
 
-        assertThrows(IllegalArgumentException.class, () -> productService.search("invalid", "Test"));
+        assertThrows(IllegalArgumentException.class, () -> searchService.search("invalid", "Test"));
     }
 
     @Test
@@ -65,9 +65,9 @@ public class ProductServiceTest {
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
 
-        when(productRepository.findByRatingLessThanEqual(4.5)).thenReturn(products);
+        when(searchRepository.findByRatingLessThanEqual(4.5)).thenReturn(products);
 
-        CompletableFuture<List<Product>> result = productService.filterByRatingLessThanEqual(4.5);
+        CompletableFuture<List<Product>> result = searchService.filterByRatingLessThanEqual(4.5);
 
         assertEquals(products, result.join());
     }
@@ -78,9 +78,9 @@ public class ProductServiceTest {
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
 
-        when(productRepository.findByRatingGreaterThanEqual(4.5)).thenReturn(products);
+        when(searchRepository.findByRatingGreaterThanEqual(4.5)).thenReturn(products);
 
-        CompletableFuture<List<Product>> result = productService.filterByRatingGreaterThanEqual(4.5);
+        CompletableFuture<List<Product>> result = searchService.filterByRatingGreaterThanEqual(4.5);
 
         assertEquals(products, result.join());
     }
@@ -91,9 +91,9 @@ public class ProductServiceTest {
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
 
-        when(productRepository.findByPriceLessThanEqual(100)).thenReturn(products);
+        when(searchRepository.findByPriceLessThanEqual(100)).thenReturn(products);
 
-        CompletableFuture<List<Product>> result = productService.filterByPriceLessThanEqual(100);
+        CompletableFuture<List<Product>> result = searchService.filterByPriceLessThanEqual(100);
 
         assertEquals(products, result.join());
     }
@@ -104,31 +104,31 @@ public class ProductServiceTest {
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
 
-        when(productRepository.findByPriceGreaterThanEqual(100)).thenReturn(products);
+        when(searchRepository.findByPriceGreaterThanEqual(100)).thenReturn(products);
 
-        CompletableFuture<List<Product>> result = productService.filterByPriceGreaterThanEqual(100);
+        CompletableFuture<List<Product>> result = searchService.filterByPriceGreaterThanEqual(100);
 
         assertEquals(products, result.join());
     }
 
     @Test
     public void testFilterByRatingLessThanEqualInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> productService.filterByRatingLessThanEqual(-1.0));
+        assertThrows(IllegalArgumentException.class, () -> searchService.filterByRatingLessThanEqual(-1.0));
     }
 
     @Test
     public void testFilterByRatingGreaterThanEqualInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> productService.filterByRatingGreaterThanEqual(-1.0));
+        assertThrows(IllegalArgumentException.class, () -> searchService.filterByRatingGreaterThanEqual(-1.0));
     }
 
     @Test
     public void testFilterByPriceLessThanEqualInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> productService.filterByPriceLessThanEqual(-1));
+        assertThrows(IllegalArgumentException.class, () -> searchService.filterByPriceLessThanEqual(-1));
     }
 
     @Test
     public void testFilterByPriceGreaterThanEqualInvalid() {
-        assertThrows(IllegalArgumentException.class, () -> productService.filterByPriceGreaterThanEqual(-1));
+        assertThrows(IllegalArgumentException.class, () -> searchService.filterByPriceGreaterThanEqual(-1));
     }
 
 }

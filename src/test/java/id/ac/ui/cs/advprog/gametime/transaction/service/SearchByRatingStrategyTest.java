@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
-import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.SearchRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +19,7 @@ import static org.mockito.Mockito.when;
 public class SearchByRatingStrategyTest {
 
     @Mock
-    private ProductRepository productRepository;
+    private SearchRepository searchRepository;
 
     @InjectMocks
     private SearchByRatingStrategy searchByRatingStrategy;
@@ -35,7 +35,7 @@ public class SearchByRatingStrategyTest {
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);
 
-        when(productRepository.findByRating(4.5)).thenReturn(products);
+        when(searchRepository.findByRating(4.5)).thenReturn(products);
 
         List<Product> result = searchByRatingStrategy.search("4.5");
 

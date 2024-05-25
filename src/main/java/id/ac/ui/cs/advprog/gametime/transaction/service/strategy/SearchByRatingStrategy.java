@@ -1,19 +1,19 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service.strategy;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
-import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
+import id.ac.ui.cs.advprog.gametime.transaction.repository.SearchRepository;
 import java.util.List;
 
 public class SearchByRatingStrategy implements SearchStrategy {
-    private final ProductRepository productRepository;
+    private final SearchRepository searchRepository;
 
-    public SearchByRatingStrategy(ProductRepository productRepository) {
-        this.productRepository = productRepository;
+    public SearchByRatingStrategy(SearchRepository searchRepository) {
+        this.searchRepository = searchRepository;
     }
 
     @Override
     public List<Product> search(String rating) {
         Double ratingDouble = Double.valueOf(rating);
-        return productRepository.findByRating(ratingDouble);
+        return searchRepository.findByRating(ratingDouble);
     }
 }
