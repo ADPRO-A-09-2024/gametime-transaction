@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/carts")
+@RequestMapping("/api/cart")
 public class CartController {
 
     @Autowired
@@ -25,14 +25,14 @@ public class CartController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<CartDTO> getCartByUserId(@PathVariable UUID userId) {
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<CartDTO> getCartByUserId(@PathVariable Integer userId) {
         Cart cart = cartService.getCartByUserId(userId);
         return ResponseEntity.ok(convertToDto(cart));
     }
 
     @PostMapping("/{userId}/items")
-    public CompletableFuture<ResponseEntity<CartDTO>> addItemToCart(@PathVariable UUID userId, @RequestBody CartItemDTO itemDto) {
+    public CompletableFuture<ResponseEntity<CartDTO>> addItemToCart(@PathVariable Integer userId, @RequestBody CartItemDTO itemDto) {
         // Convert DTO to entity if required, then call the service
         return cartService.addItemToCart(userId, convertToEntity(itemDto))
                 .thenApply(cart -> ResponseEntity.ok(convertToDto(cart)))
@@ -40,9 +40,17 @@ public class CartController {
     }
 
     @DeleteMapping("/{userId}/items/{itemId}")
-    public CompletableFuture<ResponseEntity<CartDTO>> removeItemFromCart(@PathVariable UUID userId, @PathVariable UUID itemId) {
+    public CompletableFuture<ResponseEntity<CartDTO>> removeItemFromCart(@PathVariable Integer userId, @PathVariable UUID itemId) {
         return cartService.removeItemFromCart(userId, itemId)
                 .thenApply(cart -> ResponseEntity.ok(convertToDto(cart)))
+                .exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
+    }
+
+    // New clear cart endpoint
+    @DeleteMapping("/user/{userId}/clear")
+    public CompletableFuture<ResponseEntity<Void>> clearCart(@PathVariable Integer userId) {
+        return cartService.clearCart(userId)
+                .thenApply(voidResult -> ResponseEntity.ok().<Void>build())
                 .exceptionally(ex -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build());
     }
 
@@ -60,7 +68,6 @@ public class CartController {
         CartItemDTO itemDto = new CartItemDTO();
         itemDto.setId(cartItem.getId());
         itemDto.setProductId(cartItem.getProduct().getId());
-        itemDto.setQuantity(cartItem.getQuantity());
         return itemDto;
     }
 
@@ -68,7 +75,6 @@ public class CartController {
         CartItem item = new CartItem();
         item.setId(UUID.randomUUID());
         item.setProduct(productService.getProductById(cartItemDto.getProductId()));
-        item.setQuantity(cartItemDto.getQuantity());
         return item;
     }
 }

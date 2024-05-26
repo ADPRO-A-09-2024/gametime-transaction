@@ -7,15 +7,14 @@ import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CartBuilder {
-    private UUID id;
+    private Integer userId;
     private User user;
     private List<CartItem> items = new ArrayList<>();
 
-    public CartBuilder id(UUID id) {
-        this.id = id;
+    public CartBuilder userId(Integer userId) {
+        this.userId = userId;
         return this;
     }
 
@@ -24,6 +23,7 @@ public class CartBuilder {
             throw new IllegalArgumentException("Only users with the 'BUYER' role can have a cart.");
         }
         this.user = user;
+        this.userId = user.getId();  // Automatically set userId when setting user
         return this;
     }
 
@@ -34,7 +34,7 @@ public class CartBuilder {
 
     public Cart build() {
         Cart cart = new Cart();
-        cart.setId(id);
+        cart.setUserId(userId);  // Set userId, assumes it's set either directly or via user
         cart.setUser(user);
         cart.setItems(items);
         return cart;

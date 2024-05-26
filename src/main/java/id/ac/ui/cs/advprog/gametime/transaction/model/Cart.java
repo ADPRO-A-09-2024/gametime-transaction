@@ -11,14 +11,13 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-@Table(name = "carts")
+@Table(name = "cart")
 public class Cart {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
-    private UUID id;
+    private Integer userId;  // Using the User's ID as Cart ID
 
     @OneToOne(fetch = FetchType.LAZY)
+    @MapsId  // Ensures the cart ID is mapped to the user ID
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 

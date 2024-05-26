@@ -7,7 +7,6 @@ import java.util.UUID;
 public class CartItemBuilder {
     private UUID id;
     private Product product;
-    private int quantity;
 
     public CartItemBuilder id(UUID id) {
         if (id == null) {
@@ -25,19 +24,10 @@ public class CartItemBuilder {
         return this;
     }
 
-    public CartItemBuilder quantity(int quantity) {
-        if (quantity <= 0) {
-            throw new IllegalArgumentException("Quantity must be greater than zero");
-        }
-        this.quantity = quantity;
-        return this;
-    }
-
     public CartItem build() {
         CartItem cartItem = new CartItem();
         cartItem.setId(id);
         cartItem.setProduct(product);
-        cartItem.setQuantity(quantity);
         return cartItem;
     }
 }

@@ -17,16 +17,10 @@ public class CartItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "id")
-    private Product product;
+    private Product product; // Link to the product
 
-    // Getters and Setters
-    @Getter
-    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
-
-    @Column(nullable = false)
-    private int quantity;
 
 }

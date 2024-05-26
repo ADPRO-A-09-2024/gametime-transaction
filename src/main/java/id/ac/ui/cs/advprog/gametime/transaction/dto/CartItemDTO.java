@@ -5,7 +5,7 @@ import java.util.UUID;
 public class CartItemDTO {
     private UUID id;
     private UUID productId;
-    private int quantity;
+
 
     // Getters
     public UUID getId() {
@@ -16,10 +16,6 @@ public class CartItemDTO {
         return productId;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     // Setters
     public void setId(UUID id) {
         this.id = id;
@@ -27,9 +23,5 @@ public class CartItemDTO {
 
     public void setProductId(UUID productId) {
         this.productId = productId;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 }
