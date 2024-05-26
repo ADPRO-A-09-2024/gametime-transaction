@@ -47,7 +47,7 @@ public class CartController {
     }
 
     // New clear cart endpoint
-    @DeleteMapping("/user/{userId}/clear")
+    @DeleteMapping("/{userId}/clear")
     public CompletableFuture<ResponseEntity<Void>> clearCart(@PathVariable Integer userId) {
         return cartService.clearCart(userId)
                 .thenApply(voidResult -> ResponseEntity.ok().<Void>build())
