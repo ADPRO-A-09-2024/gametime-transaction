@@ -15,5 +15,5 @@ import java.util.List;
 public class TransactionDTO {
     private String buyerId;
     private String sellerId;
-    private String products;
+    private List<String> products;
 }

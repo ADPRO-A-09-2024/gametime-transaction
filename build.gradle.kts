@@ -1,18 +1,18 @@
 plugins {
 	java
     jacoco
-	id("org.sonarqube") version "5.0.0.4638"
+	id("org.sonarqube") version "4.4.1.3373"
 	id("org.springframework.boot") version "3.2.4"
 	id("io.spring.dependency-management") version "1.1.4"
 }
 
 sonar {
-  properties {
-    property("sonar.projectKey", "ADPRO-A-09-2024_gametime-transaction")
-    property("sonar.organization", "adpro-a-09-2024")
-    property("sonar.sources", "src/main")
-    property("sonar.tests", "src/test")
-  }
+    properties {
+        property("sonar.projectKey", "ADPRO-A-09-2024_gametime-transaction")
+        property("sonar.organization", "adpro-a-09-2024")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.exclusions", "**/configs")
+    }
 }
 
 group = "id.ac.ui.cs.advprog.gametime"
@@ -47,7 +47,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.postgresql:postgresql")
 	runtimeOnly("com.h2database:h2")
-	runtimeOnly("io.micrometer:micrometer-registry-prometheus")
+	implementation("io.micrometer:micrometer-registry-prometheus")
 	annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
