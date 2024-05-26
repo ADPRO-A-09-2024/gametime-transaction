@@ -25,7 +25,7 @@ public class CartController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<CartDTO> getCartByUserId(@PathVariable Integer userId) {
         Cart cart = cartService.getCartByUserId(userId);
         return ResponseEntity.ok(convertToDto(cart));
