@@ -22,15 +22,15 @@ public class ProductReviewController {
         return ResponseEntity.ok(productReviewService.getAllProductReviews());
     }
 
-    @GetMapping("/product")
-    public ResponseEntity<List<ProductReview>> getProductReviewByProduct(@RequestBody Map<String, String> requestBody) {
-        List<ProductReview> productReviews = productReviewService.getProductReviewsByProduct(requestBody.get("productId"));
+    @GetMapping("/product/{idProduct}")
+    public ResponseEntity<List<ProductReview>> getProductReviewByProduct(@PathVariable("idProduct") String idProduct) {
+        List<ProductReview> productReviews = productReviewService.getProductReviewsByProduct(idProduct);
         return ResponseEntity.ok(productReviews);
     }
 
-    @GetMapping("/author")
-    public ResponseEntity<List<ProductReview>> getProductReviewByAuthor(@RequestBody Map<String, String> requestBody) {
-        List<ProductReview> productReviews = productReviewService.getProductReviewsByAuthor(requestBody.get("authorId"));
+    @GetMapping("/author/{idAuthor}")
+    public ResponseEntity<List<ProductReview>> getProductReviewByAuthor(@PathVariable("idAuthor") String idAuthor) {
+        List<ProductReview> productReviews = productReviewService.getProductReviewsByAuthor(idAuthor);
         return ResponseEntity.ok(productReviews);
     }
 
