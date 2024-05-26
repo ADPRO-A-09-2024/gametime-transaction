@@ -56,11 +56,8 @@ class ProductReviewControllerTest {
         reviews.add(new ProductReview());
         when(productReviewService.getProductReviewsByProduct(productId.toString())).thenReturn(reviews);
 
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("productId", productId.toString());
-
         // Act
-        ResponseEntity<List<ProductReview>> response = productReviewController.getProductReviewByProduct(requestBody);
+        ResponseEntity<List<ProductReview>> response = productReviewController.getProductReviewByProduct(productId.toString());
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -75,11 +72,8 @@ class ProductReviewControllerTest {
         reviews.add(new ProductReview());
         when(productReviewService.getProductReviewsByAuthor(authorId.toString())).thenReturn(reviews);
 
-        Map<String, String> requestBody = new HashMap<>();
-        requestBody.put("authorId", authorId.toString());
-
         // Act
-        ResponseEntity<List<ProductReview>> response = productReviewController.getProductReviewByAuthor(requestBody);
+        ResponseEntity<List<ProductReview>> response = productReviewController.getProductReviewByAuthor(authorId.toString());
 
         // Assert
         assertEquals(HttpStatus.OK, response.getStatusCode());
