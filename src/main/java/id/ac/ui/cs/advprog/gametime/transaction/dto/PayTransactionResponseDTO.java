@@ -1,6 +1,6 @@
 package id.ac.ui.cs.advprog.gametime.transaction.dto;
 
-import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
+import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TransactionDTO {
-    private String buyerId;
-    private String sellerId;
-    private List<String> products;
+public class PayTransactionResponseDTO {
+    private Transaction transaction;
+    private List<Transaction> otherWaitingTransactions;
 }

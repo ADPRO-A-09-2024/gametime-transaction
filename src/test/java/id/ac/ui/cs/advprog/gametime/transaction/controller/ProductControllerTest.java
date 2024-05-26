@@ -1,50 +1,177 @@
 package id.ac.ui.cs.advprog.gametime.transaction.controller;
 
+import id.ac.ui.cs.advprog.gametime.transaction.dto.CreateProductDTO;
+import id.ac.ui.cs.advprog.gametime.transaction.dto.UpdateProductDTO;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
-import id.ac.ui.cs.advprog.gametime.transaction.service.ProductService;
+import id.ac.ui.cs.advprog.gametime.transaction.service.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class ProductControllerTest {
-
     @Mock
-    private ProductService productService;
+    ProductServiceImpl productService;
 
     @InjectMocks
-    private ProductController productController;
-
-    private MockMvc mockMvc;
+    ProductController productController;
 
     @BeforeEach
-    public void setup() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(productController).build();
     }
 
     @Test
-    public void testSearchProduct() throws Exception {
+    void testCreateProductValid() {
+        CreateProductDTO createProductDTO = new CreateProductDTO();
+        createProductDTO.setName("Boneka doraemon");
+        createProductDTO.setSellerId("1");
+        createProductDTO.setDescription("Boneka bagus");
+        createProductDTO.setCategory("Boneka");
+        createProductDTO.setPrice("100000");
+
         Product product = new Product();
-        product.setName("Test Product");
-        List<Product> products = Arrays.asList(product);
+        when(productService.createProduct(createProductDTO)).thenReturn(product);
 
-        when(productService.search("name", "Test")).thenReturn(products);
+        ResponseEntity<Product> response = productController.createProduct(createProductDTO);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(product, response.getBody());
+        verify(productService, times(1)).createProduct(createProductDTO);
+    }
 
-        mockMvc.perform(get("/product/search/name/Test"))
-                .andExpect(status().isOk())
-                .andExpect(content().json("[{'name': 'Test Product'}]"));
+    @Test
+    void testCreateProductInvalidSellerId() {
+        CreateProductDTO createProductDTO = new CreateProductDTO();
+        createProductDTO.setName("Boneka doraemon");
+        createProductDTO.setSellerId("x");
+        createProductDTO.setDescription("Boneka bagus");
+        createProductDTO.setCategory("Boneka");
+        createProductDTO.setPrice("100000");
+
+        assertThrows(ResponseStatusException.class, () ->
+                productController.createProduct(createProductDTO));
+        verify(productService, times(0)).createProduct(any(CreateProductDTO.class));
+    }
+
+    @Test
+    void testCreateProductInvalidPrice() {
+        CreateProductDTO createProductDTO = new CreateProductDTO();
+        createProductDTO.setName("Boneka doraemon");
+        createProductDTO.setSellerId("1");
+        createProductDTO.setDescription("Boneka bagus");
+        createProductDTO.setCategory("Boneka");
+        createProductDTO.setPrice("x");
+
+        assertThrows(ResponseStatusException.class, () ->
+                productController.createProduct(createProductDTO));
+        verify(productService, times(0)).createProduct(any(CreateProductDTO.class));
+    }
+
+    @Test
+    void testGetProductValid() {
+        UUID id = UUID.randomUUID();
+        Product product = new Product();
+
+        when(productService.getProductById(id)).thenReturn(product);
+
+        ResponseEntity<Product> response = productController.getProductById(id.toString());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(product, response.getBody());
+        verify(productService, times(1)).getProductById(id);
+    }
+
+    @Test
+    void testGetProductInvalidId() {
+        assertThrows(ResponseStatusException.class, () ->
+                productController.getProductById("x"));
+        verify(productService, times(0)).getProductById(any(UUID.class));
+    }
+
+    @Test
+    void testGetProductsBySellerValid() {
+        List<Product> products = new ArrayList<>();
+
+        when(productService.getProductsBySeller(1)).thenReturn(products);
+
+        ResponseEntity<List<Product>> response = productController.getProductsBySeller("1");
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(products, response.getBody());
+        verify(productService, times(1)).getProductsBySeller(1);
+    }
+
+    @Test
+    void testGetProductsBySellerInvalidSellerId() {
+        assertThrows(ResponseStatusException.class, () ->
+                productController.getProductsBySeller("x"));
+        verify(productService, times(0)).getProductsBySeller(any(Integer.class));
+    }
+
+    @Test
+    void testGetAllProductsValid() {
+        List<Product> products = new ArrayList<>();
+
+        when(productService.getAllProducts()).thenReturn(products);
+
+        ResponseEntity<List<Product>> response = productController.getAllProducts();
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(products, response.getBody());
+        verify(productService, times(1)).getAllProducts();
+    }
+
+    @Test
+    void testEditProductValid() {
+        UpdateProductDTO updateProductDTO = new UpdateProductDTO();
+        updateProductDTO.setName("Boneka doraemon");
+        updateProductDTO.setDescription("Boneka bagus");
+        updateProductDTO.setCategory("Boneka");
+        updateProductDTO.setPrice("100000");
+
+        Product product = new Product();
+        UUID id = UUID.randomUUID();
+        when(productService.updateProduct(id, updateProductDTO)).thenReturn(product);
+
+        ResponseEntity<Product> response = productController.editProduct(id.toString(), updateProductDTO);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(product, response.getBody());
+        verify(productService, times(1)).updateProduct(id, updateProductDTO);
+    }
+
+    @Test
+    void testEditProductInvalidId() {
+        UpdateProductDTO updateProductDTO = new UpdateProductDTO();
+        updateProductDTO.setName("Boneka doraemon");
+        updateProductDTO.setDescription("Boneka bagus");
+        updateProductDTO.setCategory("Boneka");
+        updateProductDTO.setPrice("100000");
+
+        assertThrows(ResponseStatusException.class, () ->
+                productController.editProduct("x", updateProductDTO));
+        verify(productService, times(0)).updateProduct(any(UUID.class), any(UpdateProductDTO.class));
+    }
+
+    @Test
+    void testEditProductInvalidPrice() {
+        UpdateProductDTO updateProductDTO = new UpdateProductDTO();
+        updateProductDTO.setName("Boneka doraemon");
+        updateProductDTO.setDescription("Boneka bagus");
+        updateProductDTO.setCategory("Boneka");
+        updateProductDTO.setPrice("x");
+
+        UUID id = UUID.randomUUID();
+
+        assertThrows(ResponseStatusException.class, () ->
+                productController.editProduct(id.toString(), updateProductDTO));
+        verify(productService, times(0)).updateProduct(any(UUID.class), any(UpdateProductDTO.class));
     }
 }

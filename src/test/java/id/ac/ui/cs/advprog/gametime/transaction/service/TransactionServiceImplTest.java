@@ -1,6 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
+import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
@@ -13,10 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,7 +45,9 @@ public class TransactionServiceImplTest {
         transactionDTO.setSellerId("2");
 
         UUID id = UUID.randomUUID();
-        transactionDTO.setProducts(String.format("[%s]", id));
+        ArrayList<String> products = new ArrayList<>();
+        products.add(id.toString());
+        transactionDTO.setProducts(products);
 
         Product product = new Product();
         product.setPrice(100000);
@@ -106,7 +107,9 @@ public class TransactionServiceImplTest {
         transactionDTO.setSellerId("2");
 
         UUID id = UUID.randomUUID();
-        transactionDTO.setProducts(String.format("[%s]", id));
+        ArrayList<String> products = new ArrayList<>();
+        products.add(id.toString());
+        transactionDTO.setProducts(products);
         when(productRepository.findById(id)).thenReturn(Optional.empty());
 
         User buyer = new User();
@@ -243,7 +246,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    void testPayTransactionSuccess() {
+    void testPayTransactionSuccess() throws ExecutionException, InterruptedException {
         User seller = new User();
         seller.setBalance(0);
         User buyer = new User();
@@ -259,7 +262,7 @@ public class TransactionServiceImplTest {
         when(transactionRepository.findById(id)).thenReturn(Optional.of(transaction));
         when(transactionRepository.save(transaction)).thenReturn(transaction);
 
-        Transaction transactionFromPay = transactionService.payTransaction(id);
+        Transaction transactionFromPay = transactionService.payTransaction(id).get();
         assertEquals(transaction, transactionFromPay);
         assertEquals("SUCCESS", transaction.getPaymentStatus());
         assertEquals(0, buyer.getBalance());
@@ -269,7 +272,7 @@ public class TransactionServiceImplTest {
     }
 
     @Test
-    void testPayTransactionFailed() {
+    void testPayTransactionFailed() throws ExecutionException, InterruptedException {
         User seller = new User();
         seller.setBalance(0);
         User buyer = new User();
@@ -285,7 +288,7 @@ public class TransactionServiceImplTest {
         when(transactionRepository.findById(id)).thenReturn(Optional.of(transaction));
         when(transactionRepository.save(transaction)).thenReturn(transaction);
 
-        Transaction transactionFromPay = transactionService.payTransaction(id);
+        Transaction transactionFromPay = transactionService.payTransaction(id).get();
         assertEquals(transaction, transactionFromPay);
         assertEquals("FAILED", transaction.getPaymentStatus());
         assertEquals(50000, buyer.getBalance());
@@ -303,5 +306,47 @@ public class TransactionServiceImplTest {
                 transactionService.payTransaction(id));
         verify(transactionRepository, times(1)).findById(id);
         verify(transactionRepository, times(0)).save(any(Transaction.class));
+    }
+
+    @Test
+    void testGetOtherWaitingTransactions() throws ExecutionException, InterruptedException {
+        User buyer = new User();
+        buyer.setId(1);
+
+        UUID id = UUID.randomUUID();
+
+        Transaction transaction1 = new Transaction();
+        transaction1.setId(id);
+        transaction1.setBuyer(buyer);
+        transaction1.setPaymentStatus(PaymentStatus.WAITING.name());
+        Transaction transaction2 = new Transaction();
+        transaction2.setId(UUID.randomUUID());
+        transaction2.setBuyer(buyer);
+        transaction2.setPaymentStatus(PaymentStatus.WAITING.name());
+
+        List<Transaction> transactions = new ArrayList<>();
+        transactions.add(transaction1);
+        transactions.add(transaction2);
+
+        when(transactionRepository.findById(id)).thenReturn(Optional.of(transaction1));
+        when(transactionRepository.findAll()).thenReturn(transactions);
+
+        List<Transaction> otherTransactions = transactionService.getOtherWaitingTransactions(id).get();
+        assertEquals(1, otherTransactions.size());
+        assertEquals(transaction2, otherTransactions.getFirst());
+        verify(transactionRepository, times(1)).findById(id);
+        verify(transactionRepository, times(1)).findAll();
+    }
+
+
+    @Test
+    void testGetOtherWaitingTransactionsNotFound() {
+        UUID id = UUID.randomUUID();
+        when(transactionRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () ->
+                transactionService.getOtherWaitingTransactions(id));
+        verify(transactionRepository, times(1)).findById(id);
+        verify(transactionRepository, times(0)).findAll();
     }
 }

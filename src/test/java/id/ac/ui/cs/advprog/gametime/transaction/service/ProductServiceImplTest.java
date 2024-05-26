@@ -226,25 +226,4 @@ public class ProductServiceImplTest {
         verify(productRepository, times(1)).findById(id);
         verify(productRepository, times(0)).save(any(Product.class));
     }
-
-    @Test
-    public void testSearch() {
-        Product product = new Product();
-        product.setName("Test Product");
-        List<Product> products = Arrays.asList(product);
-
-        when(searchStrategyFactory.getStrategy("name")).thenReturn(searchStrategy);
-        when(searchStrategy.search("Test")).thenReturn(products);
-
-        List<Product> result = productService.search("name", "Test");
-
-        assertEquals(products, result);
-    }
-
-    @Test
-    public void testSearchInvalidType() {
-        when(searchStrategyFactory.getStrategy("invalid")).thenReturn(null);
-
-        assertThrows(IllegalArgumentException.class, () -> productService.search("invalid", "Test"));
-    }
 }
