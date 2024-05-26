@@ -36,8 +36,8 @@ public class TransactionServiceImpl implements TransactionService {
         User seller = userRepository.findById(Integer.parseInt(transactionDTO.getSellerId()))
                 .orElseThrow(() -> new IllegalArgumentException("Seller not found"));
 
-        List<Product> products = Arrays.stream(new Gson().fromJson(transactionDTO.getProducts(), String[].class))
-                .map(productId -> productRepository.findById(UUID.fromString(productId))
+        List<Product> products = Arrays.stream(transactionDTO.getProducts().toArray())
+                .map(productId -> productRepository.findById(UUID.fromString((String) productId))
                         .orElseThrow(() -> new IllegalArgumentException("Product not found")))
                 .toList();
 
