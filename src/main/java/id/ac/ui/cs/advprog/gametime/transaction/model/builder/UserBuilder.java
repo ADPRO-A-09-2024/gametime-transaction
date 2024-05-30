@@ -27,7 +27,7 @@ public class UserBuilder {
         if (username.length() < 4) {
             throw new IllegalArgumentException("Username must be at least 4 characters long");
         }
-        if (!username.matches("\\w")) {
+        if (!username.matches("^\\w*$")) {
             throw new IllegalArgumentException("Username can only contain letters, numbers, and underscore");
         }
         this.username = username;
