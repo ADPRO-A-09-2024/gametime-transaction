@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class SearchStrategyFactoryTest {
+class SearchStrategyFactoryTest {
 
     @Mock
     private SearchRepository searchRepository;
@@ -23,31 +23,31 @@ public class SearchStrategyFactoryTest {
     }
 
     @Test
-    public void testGetStrategyName() {
+    void testGetStrategyName() {
         SearchStrategy strategy = searchStrategyFactory.getStrategy("NAME", searchRepository);
         assertTrue(strategy instanceof SearchByNameStrategy);
     }
 
     @Test
-    public void testGetStrategyCategory() {
+    void testGetStrategyCategory() {
         SearchStrategy strategy = searchStrategyFactory.getStrategy("CATEGORY", searchRepository);
         assertTrue(strategy instanceof SearchByCategoryStrategy);
     }
 
     @Test
-    public void testGetStrategyRating() {
+    void testGetStrategyRating() {
         SearchStrategy strategy = searchStrategyFactory.getStrategy("RATING", searchRepository);
         assertTrue(strategy instanceof SearchByRatingStrategy);
     }
 
     @Test
-    public void testGetStrategyNull() {
+    void testGetStrategyNull() {
         SearchStrategy strategy = searchStrategyFactory.getStrategy(null, searchRepository);
         assertNull(strategy);
     }
 
     @Test
-    public void testGetStrategyInvalid() {
+    void testGetStrategyInvalid() {
         SearchStrategy strategy = searchStrategyFactory.getStrategy("INVALID", searchRepository);
         assertNull(strategy);
     }

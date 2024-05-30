@@ -13,7 +13,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GlobalExceptionHandlerTest {
+class GlobalExceptionHandlerTest {
 
     @InjectMocks
     private GlobalExceptionHandler globalExceptionHandler;
@@ -24,42 +24,42 @@ public class GlobalExceptionHandlerTest {
     }
 
     @Test
-    public void testHandleSecurityException() {
+    void testHandleSecurityException() {
         Exception exception = new Exception("Test exception");
         ProblemDetail response = globalExceptionHandler.handleSecurityException(exception);
         assertEquals("Test exception", response.getDetail());
     }
 
     @Test
-    public void testHandleExpiredJwtException() {
+    void testHandleExpiredJwtException() {
         ExpiredJwtException exception = new ExpiredJwtException(null, null, "Test exception");
         ProblemDetail response = globalExceptionHandler.handleSecurityException(exception);
         assertEquals("Test exception", response.getDetail());
     }
 
     @Test
-    public void testHandleSignatureException() {
+    void testHandleSignatureException() {
         SignatureException exception = new SignatureException("Test exception");
         ProblemDetail response = globalExceptionHandler.handleSecurityException(exception);
         assertEquals("Test exception", response.getDetail());
     }
 
     @Test
-    public void testHandleAccessDeniedException() {
+    void testHandleAccessDeniedException() {
         AccessDeniedException exception = new AccessDeniedException("Test exception");
         ProblemDetail response = globalExceptionHandler.handleSecurityException(exception);
         assertEquals("Test exception", response.getDetail());
     }
 
     @Test
-    public void testHandleAccountStatusException() {
+    void testHandleAccountStatusException() {
         AccountStatusException exception = new AccountStatusException("Test exception") {};
         ProblemDetail response = globalExceptionHandler.handleSecurityException(exception);
         assertEquals("Test exception", response.getDetail());
     }
 
     @Test
-    public void testHandleBadCredentialsException() {
+    void testHandleBadCredentialsException() {
         BadCredentialsException exception = new BadCredentialsException("Test exception");
         ProblemDetail response = globalExceptionHandler.handleSecurityException(exception);
         assertEquals("Test exception", response.getDetail());

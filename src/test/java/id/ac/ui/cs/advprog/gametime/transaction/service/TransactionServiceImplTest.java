@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
+import id.ac.ui.cs.advprog.gametime.transaction.model.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
@@ -22,7 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-public class TransactionServiceImplTest {
+class TransactionServiceImplTest {
     @Mock
     TransactionRepository transactionRepository;
     @Mock

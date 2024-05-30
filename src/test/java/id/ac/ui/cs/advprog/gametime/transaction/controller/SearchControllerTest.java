@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
-public class SearchControllerTest {
+class SearchControllerTest {
 
     @Mock
     private SearchService searchService;
@@ -36,7 +36,7 @@ public class SearchControllerTest {
     }
 
     @Test
-    public void testSearchProduct() throws Exception {
+    void testSearchProduct() throws Exception {
         Product product = new Product();
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);
@@ -50,7 +50,7 @@ public class SearchControllerTest {
 
 
     @Test
-    public void testFilterByRatingLessThanEqual() throws Exception {
+    void testFilterByRatingLessThanEqual() throws Exception {
         Product product = new Product();
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
@@ -63,7 +63,7 @@ public class SearchControllerTest {
     }
 
     @Test
-    public void testFilterByRatingGreaterThanEqual() throws Exception {
+    void testFilterByRatingGreaterThanEqual() throws Exception {
         Product product = new Product();
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
@@ -76,7 +76,7 @@ public class SearchControllerTest {
     }
 
     @Test
-    public void testFilterByPriceLessThanEqual() throws Exception {
+    void testFilterByPriceLessThanEqual() throws Exception {
         Product product = new Product();
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
@@ -89,7 +89,7 @@ public class SearchControllerTest {
     }
 
     @Test
-    public void testFilterByPriceGreaterThanEqual() throws Exception {
+    void testFilterByPriceGreaterThanEqual() throws Exception {
         Product product = new Product();
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);

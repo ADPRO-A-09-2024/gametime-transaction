@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class SearchByCategoryStrategyTest {
+class SearchByCategoryStrategyTest {
 
     @Mock
     private SearchRepository searchRepository;
@@ -30,7 +30,7 @@ public class SearchByCategoryStrategyTest {
     }
 
     @Test
-    public void testSearch() {
+    void testSearch() {
         Product product = new Product();
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);

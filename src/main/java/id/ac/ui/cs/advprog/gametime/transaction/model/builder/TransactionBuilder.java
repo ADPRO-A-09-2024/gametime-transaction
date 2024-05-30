@@ -1,6 +1,6 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
+package id.ac.ui.cs.advprog.gametime.transaction.model.builder;
 
-import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
+import id.ac.ui.cs.advprog.gametime.transaction.model.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;

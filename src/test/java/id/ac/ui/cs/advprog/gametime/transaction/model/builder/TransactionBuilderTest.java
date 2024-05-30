@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
+package id.ac.ui.cs.advprog.gametime.transaction.model.builder;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
@@ -12,7 +12,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TransactionBuilderTest {
+class TransactionBuilderTest {
     TransactionBuilder transactionBuilder;
 
     @BeforeEach
@@ -88,8 +88,9 @@ public class TransactionBuilderTest {
 
     @Test
     void testProductsEmpty() {
+        ArrayList<Product> products = new ArrayList<>();
         assertThrows(IllegalArgumentException.class, () ->
-                transactionBuilder.products(new ArrayList<>()));
+                transactionBuilder.products(products));
     }
 
     @Test

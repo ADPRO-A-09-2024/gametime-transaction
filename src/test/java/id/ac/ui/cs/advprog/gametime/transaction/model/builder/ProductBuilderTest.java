@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
+package id.ac.ui.cs.advprog.gametime.transaction.model.builder;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +9,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ProductBuilderTest {
+class ProductBuilderTest {
     ProductBuilder productBuilder;
 
     @BeforeEach

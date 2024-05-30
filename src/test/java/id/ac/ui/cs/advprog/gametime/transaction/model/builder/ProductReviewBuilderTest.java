@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
+package id.ac.ui.cs.advprog.gametime.transaction.model.builder;
 
 import org.junit.jupiter.api.Test;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
@@ -7,10 +7,10 @@ import id.ac.ui.cs.advprog.gametime.transaction.model.ProductReview;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ProductReviewBuilderTest {
+class ProductReviewBuilderTest {
 
     @Test
-    public void testBuild() {
+    void testBuild() {
         // Arrange
         User author = new User();
         Product product = new Product();

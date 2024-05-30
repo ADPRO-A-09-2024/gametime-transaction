@@ -12,13 +12,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class UserTest {
+class UserTest {
 
     @InjectMocks
     private User user;
 
     @Test
-    public void testGettersAndSetters() {
+    void testGettersAndSetters() {
         // Test setters
         user.setId(1);
         user.setUsername("test_username");
@@ -38,7 +38,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUserDetailsMethods() {
+    void testUserDetailsMethods() {
         // Test UserDetails methods
         assertTrue(user.isAccountNonExpired());
         assertTrue(user.isAccountNonLocked());
@@ -47,14 +47,14 @@ public class UserTest {
     }
 
     @Test
-    public void testGetAuthorities() {
+    void testGetAuthorities() {
         // Test getAuthorities
         Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
         assertEquals(0, authorities.size());
     }
 
     @Test
-    public void testAllArgsConstructor() {
+    void testAllArgsConstructor() {
         // Test AllArgsConstructor
         User newUser = new User(1, "test_username", "test@example.com", "test_password", "ROLE_USER", 100);
         assertEquals(1, newUser.getId());

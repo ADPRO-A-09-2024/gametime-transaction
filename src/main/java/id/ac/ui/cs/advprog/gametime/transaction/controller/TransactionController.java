@@ -5,11 +5,8 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.PayTransactionResponseDTO;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import id.ac.ui.cs.advprog.gametime.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;

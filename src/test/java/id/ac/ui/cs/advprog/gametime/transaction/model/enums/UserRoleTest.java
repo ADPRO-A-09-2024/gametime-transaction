@@ -1,12 +1,12 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Enum;
+package id.ac.ui.cs.advprog.gametime.transaction.model.enums;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserRoleTest {
+class UserRoleTest {
 
     @Test
-    public void testContains() {
+    void testContains() {
         // Test if SELLER value is contained
         assertTrue(UserRole.contains("SELLER"));
 

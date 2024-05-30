@@ -1,4 +1,4 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Enum;
+package id.ac.ui.cs.advprog.gametime.transaction.model.enums;
 
 public enum UserRole {
     SELLER("SELLER"),

@@ -22,7 +22,7 @@ import java.util.Optional;
 import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ApplicationConfigurationTest {
+class ApplicationConfigurationTest {
 
     @InjectMocks
     private ApplicationConfiguration applicationConfiguration;
@@ -39,27 +39,27 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
-    public void testUserDetailsService() {
+    void testUserDetailsService() {
         when(userRepository.findByEmail("testUser")).thenReturn(Optional.of(new User()));
         UserDetailsService userDetailsService = applicationConfiguration.userDetailsService();
         assertNotNull(userDetailsService.loadUserByUsername("testUser"));
     }
 
     @Test
-    public void testUserDetailsService_UserNotFound() {
+    void testUserDetailsService_UserNotFound() {
         when(userRepository.findByEmail("testUser")).thenReturn(Optional.empty());
         UserDetailsService userDetailsService = applicationConfiguration.userDetailsService();
         assertThrows(UsernameNotFoundException.class, () -> userDetailsService.loadUserByUsername("testUser"));
     }
 
     @Test
-    public void testPasswordEncoder() {
+    void testPasswordEncoder() {
         BCryptPasswordEncoder passwordEncoder = applicationConfiguration.passwordEncoder();
         assertNotNull(passwordEncoder);
     }
 
     @Test
-    public void testAuthenticationManager() throws Exception {
+    void testAuthenticationManager() throws Exception {
         AuthenticationManager mockAuthManager = new AuthenticationManager() {
             @Override
             public Authentication authenticate(Authentication authentication) {
@@ -73,14 +73,14 @@ public class ApplicationConfigurationTest {
     }
 
     @Test
-    public void testAuthenticationProviderBeanCreation() {
+    void testAuthenticationProviderBeanCreation() {
         when(userRepository.findByEmail(Mockito.anyString())).thenReturn(null);
 
         // Create ApplicationConfiguration instance
-        ApplicationConfiguration applicationConfiguration = new ApplicationConfiguration(userRepository);
+        ApplicationConfiguration applicationConfigurations = new ApplicationConfiguration(userRepository);
 
         // Create AuthenticationProvider bean
-        AuthenticationProvider authenticationProvider = applicationConfiguration.authenticationProvider();
+        AuthenticationProvider authenticationProvider = applicationConfigurations.authenticationProvider();
 
         // Assert that AuthenticationProvider bean is not null
         assertNotNull(authenticationProvider);

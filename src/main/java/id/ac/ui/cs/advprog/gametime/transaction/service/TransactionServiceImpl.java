@@ -1,9 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.service;
 
-import com.google.gson.Gson;
-import id.ac.ui.cs.advprog.gametime.transaction.TransactionApplication;
 import id.ac.ui.cs.advprog.gametime.transaction.dto.TransactionDTO;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.PaymentStatus;
+import id.ac.ui.cs.advprog.gametime.transaction.model.enums.PaymentStatus;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import id.ac.ui.cs.advprog.gametime.transaction.model.Transaction;
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;

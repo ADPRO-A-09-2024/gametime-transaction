@@ -1,6 +1,5 @@
 package id.ac.ui.cs.advprog.gametime.transaction.dto;
 
-import id.ac.ui.cs.advprog.gametime.transaction.model.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

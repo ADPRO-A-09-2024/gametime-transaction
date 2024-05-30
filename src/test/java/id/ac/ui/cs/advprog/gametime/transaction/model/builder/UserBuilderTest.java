@@ -1,14 +1,14 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
+package id.ac.ui.cs.advprog.gametime.transaction.model.builder;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserBuilderTest {
+class UserBuilderTest {
 
     @Test
-    public void testBuildUser() {
+    void testBuildUser() {
         // Test valid user creation
         User user = new UserBuilder()
                 .id(1)
@@ -28,7 +28,7 @@ public class UserBuilderTest {
     }
 
     @Test
-    public void testInvalidUserCreation() {
+    void testInvalidUserCreation() {
         // Test null id
         assertThrows(IllegalArgumentException.class, () -> {
             new UserBuilder()

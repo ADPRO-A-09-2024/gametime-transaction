@@ -20,7 +20,7 @@ import id.ac.ui.cs.advprog.gametime.transaction.repository.UserRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductRepository;
 import id.ac.ui.cs.advprog.gametime.transaction.repository.ProductReviewRepository;
 
-public class ProductReviewServiceImplTest {
+class ProductReviewServiceImplTest {
 
     @Mock
     private ProductReviewRepository productReviewRepository;
@@ -40,7 +40,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testAddProductReview() {
+    void testAddProductReview() {
         // Arrange
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
@@ -75,7 +75,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testAddProductReviewAuthorNotFound() {
+    void testAddProductReviewAuthorNotFound() {
         // Arrange
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
@@ -94,7 +94,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testAddProductReviewProductNotFound() {
+    void testAddProductReviewProductNotFound() {
         // Arrange
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
@@ -113,7 +113,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testGetProductReviewById() {
+    void testGetProductReviewById() {
         // Arrange
         UUID id = UUID.randomUUID();
         ProductReview productReview = new ProductReview();
@@ -128,7 +128,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testGetProductReviewsByProduct() {
+    void testGetProductReviewsByProduct() {
         // Arrange
         UUID productId = UUID.randomUUID();
         ProductReview productReview1 = new ProductReview();
@@ -146,7 +146,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testGetProductReviewsByAuthor() {
+    void testGetProductReviewsByAuthor() {
         // Arrange
         Integer authorId = 1;
         ProductReview productReview1 = new ProductReview();
@@ -164,7 +164,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testGetAllProductReviews() {
+    void testGetAllProductReviews() {
         // Arrange
         ProductReview productReview1 = new ProductReview();
         ProductReview productReview2 = new ProductReview();
@@ -178,9 +178,10 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testUpdateProductReview() {
+    void testUpdateProductReview() {
         // Arrange
         UUID productReviewId = UUID.randomUUID();
+        String productReviewIdString = productReviewId.toString();
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
         productReviewDTO.setProductId(UUID.randomUUID().toString());
@@ -205,7 +206,7 @@ public class ProductReviewServiceImplTest {
         when(productReviewRepository.save(any(ProductReview.class))).thenReturn(updatedProductReview);
 
         // Act
-        ProductReview result = productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
+        ProductReview result = productReviewService.updateProductReview(productReviewIdString, productReviewDTO);
 
         // Assert
         assertEquals(productReviewId, result.getId());
@@ -214,9 +215,9 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testUpdateProductReviewReviewNotFound() {
+    void testUpdateProductReviewReviewNotFound() {
         // Arrange
-        UUID productReviewId = UUID.randomUUID();
+        String productReviewId = UUID.randomUUID().toString();
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
         productReviewDTO.setProductId(UUID.randomUUID().toString());
@@ -229,15 +230,15 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
+            productReviewService.updateProductReview(productReviewId, productReviewDTO);
         });
         assertEquals("Review not found", exception.getMessage());
     }
 
     @Test
-    public void testUpdateProductReviewAuthorNotFound() {
+    void testUpdateProductReviewAuthorNotFound() {
         // Arrange
-        UUID productReviewId = UUID.randomUUID();
+        String productReviewId = UUID.randomUUID().toString();
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
         productReviewDTO.setProductId(UUID.randomUUID().toString());
@@ -250,15 +251,15 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
+            productReviewService.updateProductReview(productReviewId, productReviewDTO);
         });
         assertEquals("Author not found", exception.getMessage());
     }
 
     @Test
-    public void testUpdateProductReviewProductNotFound() {
+    void testUpdateProductReviewProductNotFound() {
         // Arrange
-        UUID productReviewId = UUID.randomUUID();
+        String productReviewId = UUID.randomUUID().toString();
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
         productReviewDTO.setProductId(UUID.randomUUID().toString());
@@ -271,15 +272,16 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
+            productReviewService.updateProductReview(productReviewId, productReviewDTO);
         });
         assertEquals("Product not found", exception.getMessage());
     }
 
     @Test
-    public void testUpdateProductReviewRatingOutOfRange() {
+    void testUpdateProductReviewRatingOutOfRange() {
         // Arrange
         UUID productReviewId = UUID.randomUUID();
+        String productReviewIdString = productReviewId.toString();
         ProductReviewDTO productReviewDTO = new ProductReviewDTO();
         productReviewDTO.setAuthorId("1");
         productReviewDTO.setProductId(UUID.randomUUID().toString());
@@ -294,7 +296,7 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
+            productReviewService.updateProductReview(productReviewIdString, productReviewDTO);
         });
         assertEquals("Rating must be between 0 and 5", exception.getMessage());
 
@@ -307,13 +309,13 @@ public class ProductReviewServiceImplTest {
 
         // Act & Assert
         exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.updateProductReview(productReviewId.toString(), productReviewDTO);
+            productReviewService.updateProductReview(productReviewIdString, productReviewDTO);
         });
         assertEquals("Rating must be between 0 and 5", exception.getMessage());
     }
 
     @Test
-    public void testDeleteProductReview() {
+    void testDeleteProductReview() {
         // Arrange
         UUID productReviewId = UUID.randomUUID();
         ProductReview productReview = new ProductReview();
@@ -334,21 +336,21 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testDeleteProductReviewReviewNotFound() {
+    void testDeleteProductReviewReviewNotFound() {
         // Arrange
-        UUID productReviewId = UUID.randomUUID();
+        String productReviewId = UUID.randomUUID().toString();
 
         when(productReviewRepository.findById(any(UUID.class))).thenReturn(Optional.empty()); // Review not found
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            productReviewService.deleteProductReview(productReviewId.toString());
+            productReviewService.deleteProductReview(productReviewId);
         });
         assertEquals("Review not found", exception.getMessage());
     }
 
     @Test
-    public void testDeleteAllProductReviews() {
+    void testDeleteAllProductReviews() {
         // Act
         productReviewService.deleteAllProductReviews();
 
@@ -357,7 +359,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testUpdateProductRating() {
+    void testUpdateProductRating() {
         // Arrange
         Product testProduct = new Product();
         testProduct.setId(UUID.randomUUID());
@@ -387,7 +389,7 @@ public class ProductReviewServiceImplTest {
     }
 
     @Test
-    public void testUpdateProductRatingProductNotFound() {
+    void testUpdateProductRatingProductNotFound() {
         // Arrange
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 

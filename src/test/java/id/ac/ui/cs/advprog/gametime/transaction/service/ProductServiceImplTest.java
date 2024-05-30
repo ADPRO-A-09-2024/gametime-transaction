@@ -19,7 +19,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ProductServiceImplTest {
+class ProductServiceImplTest {
     @Mock
     ProductRepository productRepository;
     @Mock
@@ -176,11 +176,12 @@ public class ProductServiceImplTest {
     @Test
     void testUpdateProductNotFound() {
         UpdateProductDTO updateProductDTO = new UpdateProductDTO();
+        UUID productId = UUID.randomUUID();
 
         when(productRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
         assertThrows(IllegalArgumentException.class, () ->
-                productService.updateProduct(UUID.randomUUID(), updateProductDTO));
+                productService.updateProduct(productId, updateProductDTO));
         verify(productRepository, times(1)).findById(any(UUID.class));
         verify(productRepository, times(0)).save(any(Product.class));
     }

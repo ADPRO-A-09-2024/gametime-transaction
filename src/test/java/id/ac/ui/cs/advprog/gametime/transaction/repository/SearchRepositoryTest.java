@@ -17,8 +17,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("unused")
 @DataJpaTest
-public class SearchRepositoryTest {
+class SearchRepositoryTest {
 
     @Mock
     private SearchRepository searchRepository;
@@ -36,7 +37,7 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByNameContaining() {
+    void testFindByNameContaining() {
         when(searchRepository.findByNameContaining(anyString())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByNameContaining("Test");
@@ -44,7 +45,7 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByCategoryContaining() {
+    void testFindByCategoryContaining() {
         when(searchRepository.findByCategoryContaining(anyString())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByCategoryContaining("Test");
@@ -52,7 +53,7 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByRating() {
+    void testFindByRating() {
         when(searchRepository.findByRating(anyDouble())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByRating(4.5);
@@ -60,25 +61,25 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByNameContainingInvalid() {
+    void testFindByNameContainingInvalid() {
         List<Product> products = searchRepository.findByNameContaining("");
         assertTrue(products.isEmpty());
     }
 
     @Test
-    public void testFindByCategoryContainingInvalid() {
+    void testFindByCategoryContainingInvalid() {
         List<Product> products = searchRepository.findByCategoryContaining("");
         assertTrue(products.isEmpty());
     }
 
     @Test
-    public void testFindByRatingInvalid() {
+    void testFindByRatingInvalid() {
         List<Product> products = searchRepository.findByRating(-1.0);
         assertTrue(products.isEmpty());
     }
 
     @Test
-    public void testFindByRatingLessThanEqual() {
+    void testFindByRatingLessThanEqual() {
         when(searchRepository.findByRatingLessThanEqual(anyDouble())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByRatingLessThanEqual(4.5);
@@ -86,7 +87,7 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByRatingGreaterThanEqual() {
+    void testFindByRatingGreaterThanEqual() {
         when(searchRepository.findByRatingGreaterThanEqual(anyDouble())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByRatingGreaterThanEqual(4.5);
@@ -94,7 +95,7 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByPriceLessThanEqual() {
+    void testFindByPriceLessThanEqual() {
         when(searchRepository.findByPriceLessThanEqual(anyInt())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByPriceLessThanEqual(100);
@@ -102,7 +103,7 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByPriceGreaterThanEqual() {
+    void testFindByPriceGreaterThanEqual() {
         when(searchRepository.findByPriceGreaterThanEqual(anyInt())).thenReturn(Arrays.asList(product));
 
         List<Product> products = searchRepository.findByPriceGreaterThanEqual(100);
@@ -110,25 +111,25 @@ public class SearchRepositoryTest {
     }
 
     @Test
-    public void testFindByRatingLessThanEqualInvalid() {
+    void testFindByRatingLessThanEqualInvalid() {
         List<Product> products = searchRepository.findByRatingLessThanEqual(-1.0);
         assertTrue(products.isEmpty());
     }
 
     @Test
-    public void testFindByRatingGreaterThanEqualInvalid() {
+    void testFindByRatingGreaterThanEqualInvalid() {
         List<Product> products = searchRepository.findByRatingGreaterThanEqual(-1.0);
         assertTrue(products.isEmpty());
     }
 
     @Test
-    public void testFindByPriceLessThanEqualInvalid() {
+    void testFindByPriceLessThanEqualInvalid() {
         List<Product> products = searchRepository.findByPriceLessThanEqual(-1);
         assertTrue(products.isEmpty());
     }
 
     @Test
-    public void testFindByPriceGreaterThanEqualInvalid() {
+    void testFindByPriceGreaterThanEqualInvalid() {
         List<Product> products = searchRepository.findByPriceGreaterThanEqual(-1);
         assertTrue(products.isEmpty());
     }

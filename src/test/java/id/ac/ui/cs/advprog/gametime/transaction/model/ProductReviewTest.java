@@ -10,7 +10,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class ProductReviewTest {
+class ProductReviewTest {
 
     @Mock
     private User author;
@@ -22,7 +22,7 @@ public class ProductReviewTest {
     private ProductReview productReview;
 
     @Test
-    public void testIdGetterAndSetter() {
+    void testIdGetterAndSetter() {
         // Set up test data
         UUID id = UUID.randomUUID();
 
@@ -34,7 +34,7 @@ public class ProductReviewTest {
     }
 
     @Test
-    public void testAuthorGetterAndSetter() {
+    void testAuthorGetterAndSetter() {
         // Set up test data
         User testAuthor = new User();
 
@@ -46,7 +46,7 @@ public class ProductReviewTest {
     }
 
     @Test
-    public void testProductGetterAndSetter() {
+    void testProductGetterAndSetter() {
         // Set up test data
         Product testProduct = new Product();
 
@@ -58,7 +58,7 @@ public class ProductReviewTest {
     }
 
     @Test
-    public void testContentGetterAndSetter() {
+    void testContentGetterAndSetter() {
         // Set up test data
         String content = "Great product!";
 
@@ -70,7 +70,7 @@ public class ProductReviewTest {
     }
 
     @Test
-    public void testRatingGetterAndSetter() {
+    void testRatingGetterAndSetter() {
         // Set up test data
         double rating = 4.5;
 

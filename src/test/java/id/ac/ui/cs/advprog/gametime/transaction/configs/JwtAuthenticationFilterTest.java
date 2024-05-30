@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import static org.mockito.Mockito.*;
 
-public class JwtAuthenticationFilterTest {
+class JwtAuthenticationFilterTest {
 
     @InjectMocks
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -45,21 +45,21 @@ public class JwtAuthenticationFilterTest {
     }
 
     @Test
-    public void testDoFilterInternal_noAuthHeader() throws Exception {
+    void testDoFilterInternal_noAuthHeader() throws Exception {
         when(request.getHeader("Authorization")).thenReturn(null);
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain, times(1)).doFilter(request, response);
     }
 
     @Test
-    public void testDoFilterInternal_authHeaderNoBearer() throws Exception {
+    void testDoFilterInternal_authHeaderNoBearer() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Basic abc123");
         jwtAuthenticationFilter.doFilterInternal(request, response, filterChain);
         verify(filterChain, times(1)).doFilter(request, response);
     }
 
     @Test
-    public void testDoFilterInternal_authHeaderWithBearer() throws Exception {
+    void testDoFilterInternal_authHeaderWithBearer() throws Exception {
         when(request.getHeader("Authorization")).thenReturn("Bearer abc123");
         when(jwtService.extractUsername("abc123")).thenReturn("testUser");
         when(userDetailsService.loadUserByUsername("testUser")).thenReturn(userDetails);

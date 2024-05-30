@@ -3,10 +3,10 @@ package id.ac.ui.cs.advprog.gametime.transaction.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ProductReviewDTOTest {
+class ProductReviewDTOTest {
 
     @Test
-    public void testAllArgsConstructor() {
+    void testAllArgsConstructor() {
         // Test constructor with all arguments
         ProductReviewDTO productReviewDTO = new ProductReviewDTO("author123", "product456", "Great product!", "5");
 

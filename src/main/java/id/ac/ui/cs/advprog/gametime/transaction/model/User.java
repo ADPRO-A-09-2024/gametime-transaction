@@ -1,7 +1,7 @@
 package id.ac.ui.cs.advprog.gametime.transaction.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.UserBuilder;
+import id.ac.ui.cs.advprog.gametime.transaction.model.builder.UserBuilder;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

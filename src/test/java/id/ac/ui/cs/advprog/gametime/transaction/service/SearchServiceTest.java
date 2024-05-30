@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class SearchServiceTest {
+class SearchServiceTest {
 
 
     @Mock
@@ -39,7 +39,7 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void testSearch() {
+    void testSearch() {
         Product product = new Product();
         product.setName("Test Product");
         List<Product> products = Arrays.asList(product);
@@ -53,14 +53,14 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void testSearchInvalidType() {
+    void testSearchInvalidType() {
         when(searchStrategyFactory.getStrategy("invalid", searchRepository)).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> searchService.search("invalid", "Test"));
     }
 
     @Test
-    public void testFilterByRatingLessThanEqual() {
+    void testFilterByRatingLessThanEqual() {
         Product product = new Product();
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
@@ -73,7 +73,7 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void testFilterByRatingGreaterThanEqual() {
+    void testFilterByRatingGreaterThanEqual() {
         Product product = new Product();
         product.setRating(4.5);
         List<Product> products = Arrays.asList(product);
@@ -86,7 +86,7 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void testFilterByPriceLessThanEqual() {
+    void testFilterByPriceLessThanEqual() {
         Product product = new Product();
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
@@ -99,7 +99,7 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void testFilterByPriceGreaterThanEqual() {
+    void testFilterByPriceGreaterThanEqual() {
         Product product = new Product();
         product.setPrice(100);
         List<Product> products = Arrays.asList(product);
@@ -112,22 +112,22 @@ public class SearchServiceTest {
     }
 
     @Test
-    public void testFilterByRatingLessThanEqualInvalid() {
+    void testFilterByRatingLessThanEqualInvalid() {
         assertThrows(IllegalArgumentException.class, () -> searchService.filterByRatingLessThanEqual(-1.0));
     }
 
     @Test
-    public void testFilterByRatingGreaterThanEqualInvalid() {
+    void testFilterByRatingGreaterThanEqualInvalid() {
         assertThrows(IllegalArgumentException.class, () -> searchService.filterByRatingGreaterThanEqual(-1.0));
     }
 
     @Test
-    public void testFilterByPriceLessThanEqualInvalid() {
+    void testFilterByPriceLessThanEqualInvalid() {
         assertThrows(IllegalArgumentException.class, () -> searchService.filterByPriceLessThanEqual(-1));
     }
 
     @Test
-    public void testFilterByPriceGreaterThanEqualInvalid() {
+    void testFilterByPriceGreaterThanEqualInvalid() {
         assertThrows(IllegalArgumentException.class, () -> searchService.filterByPriceGreaterThanEqual(-1));
     }
 

@@ -1,9 +1,7 @@
-package id.ac.ui.cs.advprog.gametime.transaction.model.Builder;
+package id.ac.ui.cs.advprog.gametime.transaction.model.builder;
 
 import id.ac.ui.cs.advprog.gametime.transaction.model.User;
-import id.ac.ui.cs.advprog.gametime.transaction.model.Enum.UserRole;
-
-import java.lang.IllegalArgumentException;
+import id.ac.ui.cs.advprog.gametime.transaction.model.enums.UserRole;
 
 public class UserBuilder {
     private Integer id;
@@ -29,7 +27,7 @@ public class UserBuilder {
         if (username.length() < 4) {
             throw new IllegalArgumentException("Username must be at least 4 characters long");
         }
-        if (!username.matches("^[a-zA-Z0-9_]*$")) {
+        if (!username.matches("\\w")) {
             throw new IllegalArgumentException("Username can only contain letters, numbers, and underscore");
         }
         this.username = username;

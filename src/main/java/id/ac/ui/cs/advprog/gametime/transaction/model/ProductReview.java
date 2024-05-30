@@ -7,7 +7,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import id.ac.ui.cs.advprog.gametime.transaction.model.Builder.ProductReviewBuilder;
+import id.ac.ui.cs.advprog.gametime.transaction.model.builder.ProductReviewBuilder;
 
 @Entity
 @Getter

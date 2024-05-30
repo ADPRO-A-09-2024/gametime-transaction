@@ -20,7 +20,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class ProductControllerTest {
+class ProductControllerTest {
     @Mock
     ProductServiceImpl productService;
 
@@ -168,10 +168,10 @@ public class ProductControllerTest {
         updateProductDTO.setCategory("Boneka");
         updateProductDTO.setPrice("x");
 
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
 
         assertThrows(ResponseStatusException.class, () ->
-                productController.editProduct(id.toString(), updateProductDTO));
+                productController.editProduct(id, updateProductDTO));
         verify(productService, times(0)).updateProduct(any(UUID.class), any(UpdateProductDTO.class));
     }
 }
