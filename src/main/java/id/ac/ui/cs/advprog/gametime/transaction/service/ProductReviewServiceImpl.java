@@ -47,7 +47,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         productReview = productReviewRepository.save(productReview);
 
         // Update product's rating asynchronously
-        CompletableFuture.runAsync(() -> updateProductRating(product.getId()));
+        CompletableFuture.runAsync(() -> this.updateProductRating(product.getId()));
 
         return productReview;
     }
@@ -92,7 +92,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         productReview = productReviewRepository.save(productReview);
 
         // Update product's rating asynchronously
-        CompletableFuture.runAsync(() -> updateProductRating(product.getId()));
+        CompletableFuture.runAsync(() -> this.updateProductRating(product.getId()));
 
         return productReview;
     }
@@ -104,7 +104,7 @@ public class ProductReviewServiceImpl implements ProductReviewService {
         productReviewRepository.delete(productReview);
 
         // Update product's rating asynchronously
-        CompletableFuture.runAsync(() -> updateProductRating(productReview.getProduct().getId()));
+        CompletableFuture.runAsync(() -> this.updateProductRating(productReview.getProduct().getId()));
     }
 
     @Override
